@@ -1,3 +1,15 @@
+<?php
+include 'mysql_connection.php';
+
+// -------------------- GET NAIL --------------- //
+$sql_top_nail    = "SELECT * FROM nail_lists ORDER BY id asc LIMIT 10";
+$result_top_nail = $mysqli->query($sql_top_nail);
+
+$sql_nail    = "SELECT * FROM nail_lists ORDER BY id DESC";
+$result_nail = $mysqli->query($sql_nail);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +36,6 @@
 </header><!-- #header -->
 
 
-
 <section id="intro" style="height: 20px;"></section><!-- #intro -->
 
 <main id="main">
@@ -32,7 +43,29 @@
       More Features Section
     ============================-->
     <section id="more-features" class="section-bg nail-list" style="    margin-top: 11px;">
+        <div class="section-header">
+            <h3 class="section-title" style="font-size: 22px;">Suggestion</h3>
+            <span class="section-divider"></span>
+        </div>
         <div class="container">
+            <div class="h-dz-list">
+                <ul>
+                    <?php while ($top = $result_top_nail->fetch_assoc()) { ?>
+                        <li class="">
+                            <div class="dz-inner">
+                                <div class="img">
+                                    <img src="<?php echo $top['pic']; ?>"
+                                    ></div>
+                                <div class="detail" style="background: #ffff;">
+                                    <strong  class="name"><?php echo $top['name']; ?></strong>
+                                    <span class="compare"><?php echo $top['price']; ?> บาท</span></div>
+                            </div>
+                        </li>
+
+                    <?php } ?>
+
+            </div>
+
             <div class="section-header">
                 <form>
                     <div class="input-group mb-3">
@@ -49,64 +82,30 @@
                 </form>
             </div>
 
-            <div class="row">
-                <div class="col" style="padding-right: 5px;">
-                    <div class="box">
-                        <div class="icon">
-                            <img style="width: 100%;" src="http://www.thainarak.net/uploads/4/8/5/0/48500987/b789ee92952c5564047023bec691bd56_orig.jpg">
+            <?php
+            $count = 1;
+            if (!empty($result_nail)) {
+                while ($row = $result_nail->fetch_assoc()) {
+                    if ($count == 1) {
+                        echo '<div class="row">';
+                    } ?>
+                    <div class="col" style="">
+                        <div class="box">
+                            <div class="icon">
+                                <img style="width: 100%;"
+                                     src="<?php echo $row['pic']; ?>">
+                            </div>
+                            <h4 class="title"><a href=""><?php echo $row['name']; ?></a></h4>
                         </div>
-                        <h4 class="title"><a href="">Lorem Ipsum</a></h4>
                     </div>
-                </div>
-                <div class="col" style="padding-left: 5px;">
-                    <div class="box">
-                        <div class="icon">
-                            <img style="width: 100%;" src="http://www.girlsallaround.com/wp-content/uploads/2016/10/78b9a686ef86507b9daada6b6ba454f1-Copy-600x686.jpg">
-                        </div>
-                        <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col" style="padding-right: 5px;">
-                    <div class="box">
-                        <div class="icon">
-                            <img style="width: 100%;" src="http://thebeautythesis.com/wp-content/uploads/2012/11/48628011.jpg">
-                        </div>
-                        <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                    </div>
-                </div>
-                <div class="col" style="padding-left: 5px;">
-                    <div class="box">
-                        <div class="icon">
-                            <img style="width: 100%;" src="http://www.thainarak.net/uploads/4/8/5/0/48500987/b789ee92952c5564047023bec691bd56_orig.jpg">
-                        </div>
-                        <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col" style="padding-right: 5px;">
-                    <div class="box">
-                        <div class="icon">
-                            <img style="width: 100%;" src="http://www.thainarak.net/uploads/4/8/5/0/48500987/b789ee92952c5564047023bec691bd56_orig.jpg">
-                        </div>
-                        <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                    </div>
-                </div>
-                <div class="col" style="padding-left: 5px;">
-                    <div class="box">
-                        <div class="icon">
-                            <img style="width: 100%;" src="http://www.fashiontranslated.com/wp-content/uploads/2012/10/316312_10151476818673957_487432530_n.jpg">
-                        </div>
-                        <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                    </div>
-                </div>
-            </div>
-
+                    <?php
+                    if ($count == 2) {
+                        echo '</div>';
+                        $count = 0;
+                    }
+                    $count++;
+                }
+            } ?>
         </div>
     </section><!-- #more-features -->
 

@@ -2762,3 +2762,21 @@ textarea.form-control {
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     -webkit-overflow-scrolling: touch; } }
+
+.card-user.nail .image img {
+  width: 100%;
+}
+
+.card-user.nail .image {
+  height: 250px;
+}
+
+.card-user.nail .content{
+  height: 220px;
+}
+
+.card-user.nail .content .row .detail{
+  height: 115px;
+  overflow: hidden;
+}
+

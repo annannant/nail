@@ -1,3 +1,8 @@
+
+<?php
+header('location:nails.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
