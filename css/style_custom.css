@@ -1222,3 +1222,27 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding: 8px 30px;
   color: #fff;
 }
+
+
+@media (max-width: 767px) {
+    #more-features.nail-list .row .box{
+        padding: 0px 0px 5px 0px;
+    }
+    #more-features.nail-list .icon {
+        height: 170px;
+        overflow: hidden;
+    }
+    #more-features.nail-list h4, #more-features p {
+        margin-left: 0;
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+.carousel-inner.onebyone-carosel { margin: auto; width: 90%; }
+.onebyone-carosel .active.left { left: -33.33%; }
+.onebyone-carosel .active.right { left: 33.33%; }
+.onebyone-carosel .next { left: 33.33%; }
+.onebyone-carosel .prev { left: -33.33%; }
+
