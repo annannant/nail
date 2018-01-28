@@ -2772,11 +2772,12 @@ textarea.form-control {
 }
 
 .card-user.nail .content{
-  height: 220px;
+  height: 150px;
+  min-height: 150px;
 }
 
 .card-user.nail .content .row .detail{
-  height: 115px;
+  height: 47px;
   overflow: hidden;
 }
 

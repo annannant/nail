@@ -1,0 +1,13 @@
+.text-pink{
+	color: pink;
+}
+
+#div_b{
+color:blue;
+
+}
+
+.row div{
+	border: 1px solid gray;
+	background-color: pink;
+}

@@ -18,8 +18,8 @@
                 <p>Booking</p>
             </a>
         </li>
-        <li class="<?php echo ($page == 'nails')? 'active' : ''; ?>">
-            <a href="nails.php">
+        <li class="<?php echo ($page == 'nail-group')? 'active' : ''; ?>">
+            <a href="nail-group.php">
                 <i class="ti-slice"></i>
                 <p>Nail</p>
             </a>
