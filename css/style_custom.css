@@ -1320,7 +1320,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .h-dz-list ul {
-    width: 454%;
+    width: 250%;
     display: table;
     padding: 0;
     overflow: hidden;
@@ -1343,27 +1343,27 @@ body.mobile-nav-active #mobile-nav-toggle {
     position: relative
 }
 
-.dz-inner > .img {
+.dz-inner .img {
     width: 100%;
     position: relative
 }
 
-.dz-inner > .img img {
+.dz-inner .img img {
     width: 100%
 }
 
-.dz-inner > .detail {
+.dz-inner .detail {
     padding: 5px
 }
 
-.dz-inner > .detail * {
+.dz-inner .detail * {
     display: block;
     word-wrap: break-word;
     overflow: hidden;
     width: 100%
 }
 
-.dz-inner > .detail .name {
+.dz-inner .detail .name {
     font-size: 13px;
     font-weight: 100;
     color: #333;
@@ -1371,7 +1371,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     line-height: 17px
 }
 
-.dz-inner > .detail .price {
+.dz-inner .detail .price {
     font-size: 14px;
     color: #e2144c;
     height: 19px;
@@ -1398,4 +1398,69 @@ tr:nth-child(odd) {background: #FFF}
 .nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(odd){
     padding-right: 5px;
 
+}
+
+/*--------------------------------------------------------------
+# Menu Footer
+--------------------------------------------------------------*/
+#menu-footer {
+    color: #fff;
+    padding: 30px 0;
+    height: 92px;
+    position: fixed;
+    left: 0;
+    bottom: 0px;
+    right: 0;
+    transition: all 0.5s;
+    z-index: 997;
+    width: 100%;
+}
+
+#menu-footer #logo {
+    text-align: center;
+    /*float: left;*/
+}
+
+#menu-footer #logo h1 {
+    font-size: 36px;
+    margin: -4px 0 0 0;
+    padding: 0;
+    line-height: 1;
+    display: inline-block;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+#menu-footer #logo h1 a,
+#menu-footer #logo h1 a:hover,
+#menu-footer #logo h1,
+#menu-footer #logo h1
+{
+    color: #fff;
+    font-size: 20px;
+}
+
+#menu-footer #logo img {
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    #menu-footer #logo h1 {
+        font-size: 23px;
+        margin-top: 0;
+    }
+
+    #menu-footer #logo img {
+        max-height: 40px;
+    }
+}
+
+#menu-footer.header-fixed {
+    background-color: #777;
+    padding: 20px 0;
+    height: 72px;
+    transition: all 0.5s;
 }
