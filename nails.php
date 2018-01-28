@@ -2,12 +2,11 @@
 include 'mysql_connection.php';
 
 // -------------------- GET NAIL --------------- //
-$sql_top_nail    = "SELECT * FROM nail_lists ORDER BY id asc LIMIT 10";
+$sql_top_nail    = "SELECT * FROM nail_groups WHERE suggestion = 1 ORDER BY id asc LIMIT 10";
 $result_top_nail = $mysqli->query($sql_top_nail);
 
-$sql_nail    = "SELECT * FROM nail_lists ORDER BY id DESC";
+$sql_nail    = "SELECT * FROM nail_groups ORDER BY id DESC";
 $result_nail = $mysqli->query($sql_nail);
-
 
 ?>
 <!DOCTYPE html>
@@ -58,7 +57,7 @@ $result_nail = $mysqli->query($sql_nail);
                                     ></div>
                                 <div class="detail" style="background: #ffff;">
                                     <strong  class="name"><?php echo $top['name']; ?></strong>
-                                    <span class="compare"><?php echo $top['price']; ?> บาท</span></div>
+                                    <span class="compare"><?php //echo $top['price']; ?> บาท</span></div>
                             </div>
                         </li>
 
@@ -66,46 +65,57 @@ $result_nail = $mysqli->query($sql_nail);
 
             </div>
 
+            <?php
+                $sql_type = "SELECT * FROM nail_types ORDER BY id DESC";
+                $result_type = $mysqli->query($sql_type);
+            ?>
             <div class="section-header">
-                <form>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Set Nail</label>
+                <form action="" method="post" role="form" class="contactForm">
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%">
+                                    <i class="ti-panel"></i> Nail Type
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+                                    <a class="dropdown-item" href="#">All</a>
+                                    <?php
+                                    while ($row_type = $result_type->fetch_assoc()){ ?>
+                                        <a class="dropdown-item" href="?type=1"><?php echo $row_type['name'] ?></a>
+                                    <?php }
+                                    ?>
+                                </div>
+                            </div>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Choose...</option>
-                            <option value="1">Nail Short</option>
-                            <option value="2">Nail Long</option>
-                            <option value="3">Pastel</option>
-                        </select>
+                        <div class="form-group col-6">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%">
+                                    <i class="ti-panel"></i> Collection
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
 
-            <?php
-            $count = 1;
-            if (!empty($result_nail)) {
-                while ($row = $result_nail->fetch_assoc()) {
-                    if ($count == 1) {
-                        echo '<div class="row">';
-                    } ?>
-                    <div class="col" style="">
+            <div class="row row-nail-list">
+                <?php while ($row = $result_nail->fetch_assoc()) { ?>
+                    <div class="col-6 row-nail-list" style="">
                         <div class="box">
                             <div class="icon">
-                                <img style="width: 100%;"
-                                     src="<?php echo $row['pic']; ?>">
+                                <img style="width: 100%;" src="<?php echo $row['pic']; ?>">
                             </div>
                             <h4 class="title"><a href=""><?php echo $row['name']; ?></a></h4>
                         </div>
                     </div>
-                    <?php
-                    if ($count == 2) {
-                        echo '</div>';
-                        $count = 0;
-                    }
-                    $count++;
-                }
-            } ?>
+                <?php } ?>
+            </div>
+
         </div>
     </section><!-- #more-features -->
 

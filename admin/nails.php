@@ -2,12 +2,12 @@
 
 include '../mysql_connection.php';
 
-
 $page = 'nails'; // for menu
 
 // -------------------- GET NAIL --------------- //
-$sql_nail    = "SELECT * FROM nail_lists ORDER BY id DESC";
+$sql_nail    = "SELECT * FROM nail_groups ORDER BY id DESC";
 $result_nail = $mysqli->query($sql_nail);
+
 ?>
 
 <!doctype html>

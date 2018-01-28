@@ -1390,3 +1390,12 @@ tr:nth-child(odd) {background: #FFF}
     padding-left: 14px;
     padding-right: 0px;
 }
+
+.nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(even){
+    padding-left: 5px;
+
+}
+.nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(odd){
+    padding-right: 5px;
+
+}
