@@ -10,11 +10,10 @@ $bullet_group = $mysqli->query($sql_group);
 $img_group    = $mysqli->query($sql_group);
 $data_group   = $mysqli->query($sql_group)->fetch_assoc();
 
-
 $sql_list    = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id";
 $bullet_list = $mysqli->query($sql_list);
-$img_list   = $mysqli->query($sql_list);
-$data_list  = $mysqli->query($sql_list);
+$img_list    = $mysqli->query($sql_list);
+$data_list   = $mysqli->query($sql_list);
 
 
 ?>
@@ -48,6 +47,42 @@ $data_list  = $mysqli->query($sql_list);
     </div>
 </header>
 
+<nav id="nav-menu-container">
+    <ul class="nav-menu">
+        <li class="menu-active"><a href="index.php">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li class="menu-has-children"><a href="">Drop Down</a>
+            <ul>
+                <li><a href="#">Drop Down 1</a></li>
+                <li class="menu-has-children"><a href="#">Drop Down 2</a>
+                    <ul>
+                        <li><a href="#">Deep Drop Down 1</a></li>
+                        <li><a href="#">Deep Drop Down 2</a></li>
+                        <li><a href="#">Deep Drop Down 3</a></li>
+                        <li><a href="#">Deep Drop Down 4</a></li>
+                        <li><a href="#">Deep Drop Down 5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Drop Down 3</a></li>
+                <li><a href="#">Drop Down 4</a></li>
+                <li><a href="#">Drop Down 5</a></li>
+            </ul>
+        </li>
+        <li><a href="#contact">Contact Us</a></li>
+    </ul>
+</nav><!-- #nav-menu-container -->
+
+<script>
+    $(document).on('click', '#mobile-nav-toggle', function (e) {
+        // $('body').toggleClass('mobile-nav-active');
+        // $('#mobile-nav-toggle i').toggleClass('fa-times fa-bars');
+        // $('#mobile-body-overly').toggle();
+    });
+</script>
 
 <section id="intro" style="height: 20px;"></section><!-- #intro -->
 
@@ -131,7 +166,7 @@ $data_list  = $mysqli->query($sql_list);
                                 Detail
                             </h2>
                             <ul style="font-size: 20px;">
-                                <?php while ($row_data_list = $data_list->fetch_assoc()){ ?>
+                                <?php while ($row_data_list = $data_list->fetch_assoc()) { ?>
                                     <li>
                                         #<?php echo $row_data_list['name'] ?>
                                         <div style="font-size: 14px;color: gray;">sss</div>
@@ -147,35 +182,93 @@ $data_list  = $mysqli->query($sql_list);
 </main>
 
 
+<div class="modal-cart wow" style="display: none;">
+    <div class="container">
+        <div class="row detail">
+            <div class="col-5">
+                <div class="pic-product">
+                    <img src="<?php echo $data_group['pic']; ?>"/ >
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="detail-product">
+                    <?php echo $data_group['name']; ?>
+                </div>
+            </div>
+            <div class="col-1">
+                <button type="button" class="close-modal-cart"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="row options">
+            <div class="col-12">Choose nail</div>
+            <div class="col-12">
+                <!--Checkbox butons-->
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default  option active">
+                        <input type="radio" name="group" id="x" checked autocomplete="off"> radio 1 (pre-checked)
+                    </label>
 
-<!-- Modal -->
-<div class="modal fade model-cart" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                    <label class="btn btn-default option ">
+                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
+                    </label>
+
+                    <label class="btn btn-default option ">
+                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
+                    </label>
+
+                    <label class="btn btn-default option ">
+                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
+                    </label>
+
+                    <label class="btn btn-default  option active">
+                        <input type="radio" name="group" id="x" checked autocomplete="off"> radio 1 (pre-checked)
+                    </label>
+
+                    <label class="btn btn-default option ">
+                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
+                    </label>
+
+                    <label class="btn btn-default option ">
+                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
+                    </label>
+
+                    <label class="btn btn-default option ">
+                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
+                    </label>
+
+                </div>
+                <!--Checkbox butons-->
             </div>
-            <div class="modal-body">
-                ...
+        </div>
+        <div class="row actions">
+            <div class="col-12 row-qty">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus"
+                                data-field="quant[1]">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                    </div>
+                    <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            <div class="col-12 row-btn">
+                <button type="button" class="add-item-cart header-fixed btn">Add to cart</button>
             </div>
         </div>
     </div>
 </div>
-
-<div class="fade model-cart" >
-    ssssss
-</div>
 <!--==========================
   Footer
 ============================-->
-<button id="menu-footer" type="button" class="header-fixed btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+<button id="add-to-cart" type="button" class="menu-footer header-fixed btn" data-toggle="modal"
+        data-target="#exampleModal">
     <div class="container">
         <div id="logo" class="">
             <h1><i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -184,6 +277,18 @@ $data_list  = $mysqli->query($sql_list);
         </div>
     </div>
 </button>
+
+<script>
+    $('#add-to-cart').on('click', function () {
+        $('.modal-cart').show().addClass('animated slideInUp');
+
+    });
+
+    $('.close-modal-cart').on('click', function () {
+       $('.modal-cart').hide();
+    });
+
+</script>
 
 <?php include_once 'include_footer.php'; ?>
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
@@ -209,5 +314,84 @@ $data_list  = $mysqli->query($sql_list);
         });
     });
 </script>
+
+
+<script>
+    // ---------------- increase decrease button ----------------
+    // plugin bootstrap minus and plus
+    //http://jsfiddle.net/laelitenetwork/puJ6G/
+    $('.btn-number').click(function (e) {
+        e.preventDefault();
+
+        fieldName      = $(this).attr('data-field');
+        type           = $(this).attr('data-type');
+        var input      = $("input[name='" + fieldName + "']");
+        var currentVal = parseInt(input.val());
+        if (!isNaN(currentVal)) {
+            if (type == 'minus') {
+
+                if (currentVal > input.attr('min')) {
+                    input.val(currentVal - 1).change();
+                }
+                if (parseInt(input.val()) == input.attr('min')) {
+                    $(this).attr('disabled', true);
+                }
+
+            } else if (type == 'plus') {
+
+                if (currentVal < input.attr('max')) {
+                    input.val(currentVal + 1).change();
+                }
+                if (parseInt(input.val()) == input.attr('max')) {
+                    $(this).attr('disabled', true);
+                }
+
+            }
+        } else {
+            input.val(0);
+        }
+    });
+    $('.input-number').focusin(function () {
+        $(this).data('oldValue', $(this).val());
+    });
+    $('.input-number').change(function () {
+
+        minValue     = parseInt($(this).attr('min'));
+        maxValue     = parseInt($(this).attr('max'));
+        valueCurrent = parseInt($(this).val());
+
+        var name = $(this).attr('name');
+        if (valueCurrent >= minValue) {
+            $(".btn-number[data-type='minus'][data-field='" + name + "']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the minimum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        if (valueCurrent <= maxValue) {
+            $(".btn-number[data-type='plus'][data-field='" + name + "']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the maximum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+
+
+    });
+    $(".input-number").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+            // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+</script>
+
 </body>
 </html>
