@@ -308,7 +308,7 @@ while ($row = $result_list->fetch_assoc()) {
             return;
         }
 
-        $.post("cart-post.php", data, function (data) {
+        $.post("detail-post.php", data, function (data) {
             window.location.href = 'cart.php';
         });
     });
