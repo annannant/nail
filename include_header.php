@@ -17,6 +17,7 @@
 <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
 <link href="lib/magnific-popup/magnific-popup.css" rel="stylesheet">
+<link href="lib/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
 
 <!-- Main Stylesheet File -->
 <link href="css/style_custom.css" rel="stylesheet">

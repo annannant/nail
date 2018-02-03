@@ -1,20 +1,28 @@
 <?php
+session_start();
 include 'mysql_connection.php';
-
 
 // -------------------- GET NAIL --------------- //
 $nail_group_id = $_GET['id'];
 
 $sql_group    = "SELECT * FROM nail_groups WHERE id = $nail_group_id";
-$bullet_group = $mysqli->query($sql_group);
-$img_group    = $mysqli->query($sql_group);
+$result_group = $mysqli->query($sql_group);
 $data_group   = $mysqli->query($sql_group)->fetch_assoc();
 
-$sql_list    = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id";
-$bullet_list = $mysqli->query($sql_list);
-$img_list    = $mysqli->query($sql_list);
-$data_list   = $mysqli->query($sql_list);
+$arr_group = [];
+while ($row = $result_group->fetch_assoc()) {
+    $arr_group[] = $row;
+}
 
+$sql_list    = "SELECT nail_lists.*, nail_groups.name as group_name  
+FROM nail_lists 
+INNER JOIN nail_groups ON nail_lists.nail_group_id = nail_groups.id
+WHERE nail_group_id = $nail_group_id ";
+$result_list = $mysqli->query($sql_list);
+$arr_list    = [];
+while ($row = $result_list->fetch_assoc()) {
+    $arr_list[] = $row;
+}
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +49,7 @@ $data_list   = $mysqli->query($sql_list);
 <header id="header" class="header-fixed">
     <div class="container">
         <div id="logo" class="pull-left">
-            <h1><a href="#" class="scrollto">My Story Nail</a></h1>
+            <h1 style="font-size: 25px;margin-top: -7px;"><a href="#" class="scrollto"><?php echo $data_group['name'] ?></a></h1>
         </div>
         <?php include_once 'include_nav.php'; ?>
     </div>
@@ -100,31 +108,31 @@ $data_list   = $mysqli->query($sql_list);
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                    <?php while ($row_bullet_group = $bullet_group->fetch_assoc()) { ?>
+                    <?php foreach ($arr_group as $group) { ?>
                         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
                     <?php } ?>
 
                     <?php
                     $no = 1;
-                    while ($row_bullet_list = $bullet_list->fetch_assoc()) { ?>
+                    foreach ($arr_list as $list) { ?>
                         <li data-target="#carousel-example-generic" data-slide-to="<?php echo $no;
                         $no++; ?>" class=""></li>
-                    <?php } ?> _
+                    <?php } ?>
                 </ol>
 
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
-                    <? while ($row_img_group = $img_group->fetch_assoc()) { ?>
+                    <?php foreach ($arr_group as $group) { ?>
                         <div class="item active">
-                            <img src="<?php echo $row_img_group['pic']; ?>">
+                            <img src="<?php echo $group['pic']; ?>">
                         </div>
                     <?php } ?>
 
                     <?php
                     $no_img = 1;
-                    while ($row_img_list = $img_list->fetch_assoc()) { ?>
+                    foreach ($arr_list as $list) { ?>
                         <div class="item">
-                            <img src="<?php echo $row_img_list['pic']; ?>?image=<?php echo $no_img; ?>">
+                            <img src="<?php echo $list['pic']; ?>?image=<?php echo $no_img; ?>">
                         </div>
                         <?php
                         $no_img++;
@@ -162,17 +170,26 @@ $data_list   = $mysqli->query($sql_list);
                     <div class="col-12">
 
                         <div class="container" style="border: 1px solid #ccc;background-color: #fff;margin-top: 20px;">
-                            <h2>
+                            <h4>
                                 Detail
-                            </h2>
-                            <ul style="font-size: 20px;">
-                                <?php while ($row_data_list = $data_list->fetch_assoc()) { ?>
+                            </h4>
+                            <ul style="font-size: 18px;">
+                                <?php
+                                $sum_price = 0;
+                                foreach ($arr_list as $list) {
+                                    $sum_price = $list['price'];
+                                    ?>
                                     <li>
-                                        #<?php echo $row_data_list['name'] ?>
-                                        <div style="font-size: 14px;color: gray;">sss</div>
+                                        #<?php echo $list['name'] ?>
+                                        <div style="font-size: 14px;color: gray;"><?php echo $list['detail'] ?></div>
                                     </li>
                                 <?php } ?>
                             </ul>
+                            <div style="padding-bottom: 15px">
+                                <h4>
+                                    Price set : ฿<?php echo $sum_price; ?>
+                                </h4>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -182,7 +199,7 @@ $data_list   = $mysqli->query($sql_list);
 </main>
 
 
-<div class="modal-cart wow" style="display: none;">
+<div class="modal-cart " style="display: none;">
     <div class="container">
         <div class="row detail">
             <div class="col-5">
@@ -196,46 +213,26 @@ $data_list   = $mysqli->query($sql_list);
                 </div>
             </div>
             <div class="col-1">
-                <button type="button" class="close-modal-cart"><i class="fa fa-times"></i></button>
+                <div class="close-modal-cart"><i class="fa fa-times"></i></div>
             </div>
         </div>
-        <div class="row options">
+        <div class="row options choose-nail">
             <div class="col-12">Choose nail</div>
             <div class="col-12">
                 <!--Checkbox butons-->
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default  option active">
-                        <input type="radio" name="group" id="x" checked autocomplete="off"> radio 1 (pre-checked)
-                    </label>
-
-                    <label class="btn btn-default option ">
-                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
-                    </label>
-
-                    <label class="btn btn-default option ">
-                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
-                    </label>
-
-                    <label class="btn btn-default option ">
-                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
-                    </label>
-
-                    <label class="btn btn-default  option active">
-                        <input type="radio" name="group" id="x" checked autocomplete="off"> radio 1 (pre-checked)
-                    </label>
-
-                    <label class="btn btn-default option ">
-                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
-                    </label>
-
-                    <label class="btn btn-default option ">
-                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
-                    </label>
-
-                    <label class="btn btn-default option ">
-                        <input type="radio" name="group" id="x" autocomplete="off"> radio 3 xxxxxx
-                    </label>
-
+                    <?php foreach ($arr_list as $list) { ?>
+                        <label class="btn btn-default  option choose-nail-item"
+                               data-id="<?php echo $list['id'] ?>"
+                               data-price="<?php echo $list['price'] ?>"
+                               data-name="<?php echo $list['name'] ?>"
+                               data-group-name="<?php echo $list['group_name'] ?>"
+                               data-group-id="<?php echo $list['nail_group_id'] ?>"
+                               style="font-size: 12px;">
+                            <input type="radio" name="group" id="<?php echo $list['id'] ?>"
+                                   autocomplete="off"><?php echo $list['name'] ?>
+                        </label>
+                    <?php } ?>
                 </div>
                 <!--Checkbox butons-->
             </div>
@@ -249,7 +246,8 @@ $data_list   = $mysqli->query($sql_list);
                             <span class="glyphicon glyphicon-minus"></span>
                         </button>
                     </div>
-                    <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                    <input type="text" id="quantity" name="quant[1]" class="form-control input-number" value="1" min="1"
+                           max="10">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
                             <span class="glyphicon glyphicon-plus"></span>
@@ -277,17 +275,43 @@ $data_list   = $mysqli->query($sql_list);
         </div>
     </div>
 </button>
-
+<input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member']))? 'true' : 'false' ?>">
 <script>
     $('#add-to-cart').on('click', function () {
+
+        if ($('#alreadyLogin').val() == 'false') {
+            window.location.href = 'login.php';
+            return;
+        }
+
         $('.modal-cart').show().addClass('animated slideInUp');
 
     });
 
     $('.close-modal-cart').on('click', function () {
-       $('.modal-cart').hide();
+        $('.modal-cart').hide();
     });
 
+    // ==================== Add To Cart ====================
+    $('.add-item-cart').on('click', function () {
+        var data = {
+            "qty": $('#quantity').val(),
+            "price": $('.choose-nail-item.active').attr('data-price'),
+            "name": $('.choose-nail-item.active').attr('data-name'),
+            "group_name": $('.choose-nail-item.active').attr('data-group-name'),
+            "nail_list_id": $('.choose-nail-item.active').attr('data-id'),
+            "nail_group_id": $('.choose-nail-item.active').attr('data-group-id')
+        };
+
+        if(data.nail_list_id === undefined){
+            alert('Please choose nail!');
+            return;
+        }
+
+        $.post("cart-post.php", data, function (data) {
+            window.location.href = 'cart.php';
+        });
+    });
 </script>
 
 <?php include_once 'include_footer.php'; ?>

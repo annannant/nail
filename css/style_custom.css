@@ -1269,7 +1269,6 @@ body.mobile-nav-active #mobile-nav-toggle {
     left: -33.33%;
 }
 
-
 .h-deal-zapp {
     background-color: #FFF;
     margin: 0 0 10px;
@@ -1379,8 +1378,13 @@ body.mobile-nav-active #mobile-nav-toggle {
     margin: 5px 0 0
 }
 
-tr:nth-child(even) {background: #CCC}
-tr:nth-child(odd) {background: #FFF}
+tr:nth-child(even) {
+    background: #CCC
+}
+
+tr:nth-child(odd) {
+    background: #FFF
+}
 
 .nail-list .container .row .col:nth-child(even) {
     padding-left: 12px;
@@ -1391,11 +1395,12 @@ tr:nth-child(odd) {background: #FFF}
     padding-right: 0px;
 }
 
-.nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(even){
+.nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(even) {
     padding-left: 5px;
 
 }
-.nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(odd){
+
+.nail-list .row.row-nail-list div.col-6.row-nail-list:nth-child(odd) {
     padding-right: 5px;
 
 }
@@ -1436,8 +1441,7 @@ tr:nth-child(odd) {background: #FFF}
 .menu-footer #logo h1 a,
 .menu-footer #logo h1 a:hover,
 .menu-footer #logo h1,
-.menu-footer #logo h1
-{
+.menu-footer #logo h1 {
     color: #fff;
     font-size: 20px;
 }
@@ -1465,13 +1469,10 @@ tr:nth-child(odd) {background: #FFF}
     transition: all 0.5s;
 }
 
-
-
-
 /*--------------------------------------------------------------
 # Modal Cart
 --------------------------------------------------------------*/
-.modal-cart{
+.modal-cart {
     z-index: 999;
     height: 60%;
     background-color: #585757cf;
@@ -1482,10 +1483,11 @@ tr:nth-child(odd) {background: #FFF}
     color: #ffffff;
 }
 
-.modal-cart .detail{
+.modal-cart .detail {
     height: 90px;
 }
-.modal-cart .close-modal-cart{
+
+.modal-cart .close-modal-cart {
     position: absolute;
     right: 8px;
 }
@@ -1497,7 +1499,7 @@ tr:nth-child(odd) {background: #FFF}
     border: 3px solid gray;
 }
 
-.modal-cart .detail .pic-product img{
+.modal-cart .detail .pic-product img {
     width: 100%;
 }
 
@@ -1505,11 +1507,11 @@ tr:nth-child(odd) {background: #FFF}
     width: 135px;
 }
 
-.modal-cart .detail{
+.modal-cart .detail {
     height: 90px;
 }
 
-.modal-cart .options{
+.modal-cart .options {
     padding: 10px 0px;
     max-height: 160px;
     overflow: scroll;
@@ -1517,13 +1519,13 @@ tr:nth-child(odd) {background: #FFF}
     border-bottom: 2px solid #777;
 }
 
-.modal-cart .options .btn-group .option{
+.modal-cart .options .btn-group .option {
     margin-bottom: 12px;
     margin-right: 12px;
     border-radius: 0;
 }
 
-.modal-cart .actions{
+.modal-cart .actions {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -1538,22 +1540,144 @@ tr:nth-child(odd) {background: #FFF}
     float: right;
 }
 
-.modal-cart .actions .row-qty .input-group input{
+.modal-cart .actions .row-qty .input-group input {
     text-align: center;
 }
 
-.modal-cart .actions .row-btn{
+.modal-cart .actions .row-btn {
     padding-top: 20px;
 }
-.modal-cart .actions .add-item-cart{
+
+.modal-cart .actions .add-item-cart {
     width: 100%;
     color: #000;
 }
 
+.choose-nail-item.btn-default.active,
+.choose-nail-item.btn-default.focus,
+.choose-nail-item.btn-default:active,
+.choose-nail-item.btn-default:focus,
+.choose-nail-item.btn-default:hover {
+    color: #fff;
+    background-color: #76b9b8;
+    border-color: #689c9c;
+}
 
+.choose-nail-item {
 
+}
 
+/** ----------------- cart ----------------- */
+.cart {
+    padding: 50px 20px;
+    margin-top: 11px;
+    padding-bottom: 50px;
+    min-height: 520px;
+}
 
+.cart .container {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    background-color: #fff;
+    margin-top: 20px;
+}
+.cart .container .row{
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    min-height: 60px;
+}
 
+.cart .container .row.header {
+    background-color: #dee2e6;
+}
+.cart .row-checkbox{
+    padding-left: 8px;
+    /*display: inline-block;*/
+    /*float: left;*/
+    /*height: 50px;*/
+}
 
+.cart .row-detail{
+    /*display: inline-block;*/
+    /*height: 60px;*/
+}
 
+.cart-total-price{
+    text-align: left;
+    padding-left: 15px;
+    padding-top: 7px;
+    font-size: 20px;
+}
+
+.cart-is-empty{
+    text-align: center;
+    padding-top: 70px;
+    min-height: 250px;
+    vertical-align: middle;
+}
+/* The container */
+.container-label {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 35px;
+    width: 35px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container-label:hover input ~ .checkmark {
+    background-color: #eee;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container-label input:checked ~ .checkmark {
+    background-color: #98a1a9;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container-label input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container-label .checkmark:after {
+    left: 14px;
+    top: 5px;
+    width: 8px;
+    height: 18px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

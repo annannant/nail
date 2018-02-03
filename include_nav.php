@@ -23,6 +23,6 @@
                 <li><a href="#">Drop Down 5</a></li>
             </ul>
         </li>
-        <li><a href="#contact">Contact Us</a></li>
+<!--        <li><a href="#contact">Logout</a></li>-->
     </ul>
 </nav><!-- #nav-menu-container -->

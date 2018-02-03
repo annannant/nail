@@ -1,3 +1,29 @@
+<?php
+session_start();
+
+include 'mysql_connection.php';
+
+if (!empty($_SESSION['member'])) {
+    echo "<script>window.location.href='index.php'</script>";
+}
+
+if (!empty($_POST)) {
+    $email    = $_POST['email'];
+    $password = $_POST['password'];
+
+    $sql    = "SELECT *  FROM `members` WHERE `email` LIKE '$email' AND `password` LIKE '$password'";
+    $result = $mysqli->query($sql);
+    if (empty($result)) {
+        echo "<script>alert('Login fail!');</script>";
+        echo "<script>window.location='login.php'</script>";
+    } else {
+        $_SESSION['member'] = $result->fetch_assoc();
+        echo "<script>window.location='index.php'</script>";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,23 +73,24 @@
                     <div class="form">
                         <div id="sendmessage">Your message has been sent. Thank you!</div>
                         <div id="errormessage"></div>
-                        <form action="" method="post" role="form" class="contactForm">
+                        <form action="" method="post" role="form" class="">
                             <div class="form-row">
                                 <div class="form-group col-lg-6">
-                                    <input type="text" name="username" class="form-control" id="username"
-                                           placeholder="Username" />
+                                    <input type="text" name="email" class="form-control" id="email"
+                                           placeholder="E-mail"/>
                                     <div class="validation"></div>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <input type="text" name="password" class="form-control" id="password"
-                                           placeholder="Password" />
+                                    <input type="password" name="password" class="form-control" id="password"
+                                           placeholder="Password"/>
                                     <div class="validation"></div>
                                 </div>
                             </div>
                             <div class="text-center">
                                 <button type="submit" title="Login"
-                                        style="width: 200px;margin-top: 20px;">Login</button>
-                                <a href="register.php" title="Register"  class="btn"
+                                        style="width: 200px;margin-top: 20px;">Login
+                                </button>
+                                <a href="register.php" title="Register" class="btn"
                                    style="width: 200px; border: 1px solid #7abfbe;background: #ffff;color: #7abfbe;margin-top: 15px;">
                                     Register</a>
                             </div>
@@ -93,9 +120,6 @@
 <script src="lib/superfish/hoverIntent.js"></script>
 <script src="lib/superfish/superfish.min.js"></script>
 <script src="lib/magnific-popup/magnific-popup.min.js"></script>
-
-<!-- Contact Form JavaScript File -->
-<script src="contactform/contactform.js"></script>
 
 <!-- Template Main Javascript File -->
 <script src="js/main.js"></script>

@@ -91,7 +91,7 @@ $result_nail = $mysqli->query($sql_nail);
 
                         ?>
                         <div class="form-group col-6">
-                            <label class="" for="inputGroupSelect01"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            <label class="" for="inputGroupSelect01"><i class="fas fa-paint-brush"></i>
                                 Type</label>
                             <div class="input-group mb-3">
                                 <select name="nail_type_id" class="custom-select select-nail" id="inputGroupSelect01">
@@ -113,7 +113,7 @@ $result_nail = $mysqli->query($sql_nail);
                         $result_collection = $mysqli->query($sql_collection);
                         ?>
                         <div class="form-group col-6">
-                            <label class="" for="inputGroupSelect02"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            <label class="" for="inputGroupSelect02"><i class="fas fa-paint-brush"></i>
                                 Collection</label>
                             <div class="input-group mb-3">
                                 <select name="collection_id" class="custom-select select-nail" id="inputGroupSelect02">
