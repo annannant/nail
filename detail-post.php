@@ -32,7 +32,6 @@ if (empty($result_old)) {
 }
 
 
-
 // =============== SELECT BOOKING ITEM CART ==================
 $sql_old_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $booking_id AND `nail_group_id` = $nail_group_id AND `nail_list_id` = $nail_list_id ORDER BY id DESC LIMIT 0,1";
 $result_old_list = $mysqli->query($sql_old_list)->fetch_assoc();
@@ -43,6 +42,9 @@ VALUES ('$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$
 
 } else {
     $qty                 = $qty + $result_old_list['qty'];
+    if($qty >= 10){
+        echo json_encode(['error' => 'Nail over max limit.']); die;
+    }
     $amount              = $qty * $result_old_list['price'];
     $sql_booking_list    = "UPDATE `booking_lists` SET `qty` = $qty , `amount` = $amount 
 WHERE `booking_id` = $booking_id AND `nail_group_id` = $nail_group_id AND `nail_list_id` = $nail_list_id";

@@ -49,7 +49,8 @@ while ($row = $result_list->fetch_assoc()) {
 <header id="header" class="header-fixed">
     <div class="container">
         <div id="logo" class="pull-left">
-            <h1 style="font-size: 25px;margin-top: -7px;"><a href="#" class="scrollto"><?php echo $data_group['name'] ?></a></h1>
+            <h1 style="font-size: 25px;margin-top: -7px;"><a href="#"
+                                                             class="scrollto"><?php echo $data_group['name'] ?></a></h1>
         </div>
         <?php include_once 'include_nav.php'; ?>
     </div>
@@ -275,7 +276,7 @@ while ($row = $result_list->fetch_assoc()) {
         </div>
     </div>
 </button>
-<input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member']))? 'true' : 'false' ?>">
+<input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member'])) ? 'true' : 'false' ?>">
 <script>
     $('#add-to-cart').on('click', function () {
 
@@ -303,14 +304,19 @@ while ($row = $result_list->fetch_assoc()) {
             "nail_group_id": $('.choose-nail-item.active').attr('data-group-id')
         };
 
-        if(data.nail_list_id === undefined){
+        if (data.nail_list_id === undefined) {
             alert('Please choose nail!');
             return;
         }
 
         $.post("detail-post.php", data, function (data) {
-            window.location.href = 'cart.php';
-        });
+            if (data.error !== undefined) {
+                alert(data.error);
+                return;
+            } else {
+                window.location.href = 'cart.php';
+            }
+        }, "json");
     });
 </script>
 
