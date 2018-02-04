@@ -84,107 +84,92 @@ while ($row = $result->fetch_assoc()) {
         // $('#mobile-body-overly').toggle();
     });
 </script>
+<form action="time-slot-post.php" method="post">
 
-<section id="intro" style="height: 20px;"></section><!-- #intro -->
+    <section id="intro" style="height: 20px;"></section><!-- #intro -->
 
-<main id="main">
+    <main id="main">
 
-    <!--==========================
-      More Features Section
-    ============================-->
-    <section id="" class="section-bg" style="padding-top: 50px;padding-bottom: 10px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
-                    <div class="section-header" data-wow-duration="1s"
-                         style="visibility: visible; animation-duration: 1s; animation-name: fadeIn;">
-                        <h3 class="" style="font-weight: normal;">Date : </h3>
+        <!--==========================
+          More Features Section
+        ============================-->
+        <section id="" class="section-bg" style="padding-top: 50px;padding-bottom: 10px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="section-header" data-wow-duration="1s"
+                             style="visibility: visible; animation-duration: 1s; animation-name: fadeIn;">
+                            <h3 class="" style="font-weight: normal;">Date : </h3>
+                        </div>
                     </div>
-                </div>
-                <div class="col-9">
-                    <div class="input-group mb-3">
-                        <input type="text" id="date" name="date" value="<?php echo $date_selected ?>"
-                               class="form-control" style="margin-top: 18px;width: 85%;">
-                        <div class="input-group-prepend">
+                    <div class="col-9">
+                        <div class="input-group mb-3">
+                            <input type="text" id="date" name="date" value="<?php echo $date_selected ?>"
+                                   class="form-control" style="margin-top: 18px;width: 85%;">
+                            <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"
                                   style="margin-top: 18px;height: 34px;font-size: 15px;">
                                 <i class="far fa-calendar-alt"></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <script>
-        var date = new Date();
-        date.setDate(date.getDate());
-        $('#date').datepicker({
-            "format": 'dd-mm-yyyy',
-            "setDate": new Date(),
-            "startDate": date,
-            "autoclose": true
-        });
+        </section>
+        <script>
+            var date = new Date();
+            date.setDate(date.getDate());
+            $('#date').datepicker({
+                "format": 'dd-mm-yyyy',
+                "setDate": new Date(),
+                "startDate": date,
+                "autoclose": true
+            });
 
-        $('#date').on('change', function () {
-            window.location.href = 'time-slot.php?date=' + $(this).val();
-        });
+            $('#date').on('change', function () {
+                window.location.href = 'time-slot.php?date=' + $(this).val();
+            });
+        </script>
+        <div class="text-open">Open 11.30 - 20.30</div>
+        <section id="" class="" style="padding: 0px 20px 20px 20px;min-height: 390px;">
+            <div class="container">
+                <div class="row">
+                    <div class="btn-group" data-toggle="buttons">
+                        <?php foreach ($times as $time) {
 
-        $('#booking_btn').on('click', function () {
-            // var data = {
-            //     "qty": $('#quantity').val(),
-            //     "price": $('.choose-time-slot.active').attr('data-price'),
-            //     "name": $('.choose-time-slot.active').attr('data-name'),
-            //     "group_name": $('.choose-time-slot.active').attr('data-group-name'),
-            //     "nail_list_id": $('.choose-time-slot.active').attr('data-id'),
-            //     "nail_group_id": $('.choose-time-slot.active').attr('data-group-id')
-            // };
-            //
-            // if (data.nail_list_id === undefined) {
-            //     alert('Please choose nail!');
-            //     return;
-            // }
+                            $disabled = '';
+                            $start    = date('YmdHis', strtotime($date_selected . ' ' . $time['start']));
+                            $end      = date('YmdHis', strtotime($date_selected . ' ' . $time['end']));
 
-        });
+                            if ($start < date('YmdHis') || $end < date('YmdHis')) {
+                                $disabled = 'disabled';
+                            }
 
-    </script>
-    <div class="text-open">Open 11.30 - 20.30</div>
-    <section id="" class="" style="padding: 0px 20px 20px 20px;min-height: 390px;">
-        <div class="container">
-            <div class="row">
-                <div class="btn-group" data-toggle="buttons">
-                    <?php foreach ($times as $time) {
-
-                        $disabled = '';
-                        $start    = date('YmdHis', strtotime($date_selected . ' ' . $time['start']));
-                        $end      = date('YmdHis', strtotime($date_selected . ' ' . $time['end']));
-
-                        if ($start < date('YmdHis') || $end < date('YmdHis')) {
-                            $disabled = 'disabled';
-                        }
-
-                        ?>
-                        <label class="col-6 btn btn-default option choose-time-slot <?php echo $disabled ?>"
-                               <?php empty($disabled)? "disabled": true; ?>
-                               style="font-size: 20px;">
-                            <input type="radio" name="time-slot" id="" autocomplete="off"
-                            ><?php echo $time['name'] ?>
-                        </label>
-                    <?php } ?>
+                            ?>
+                            <label class="col-6 btn btn-default option choose-time-slot <?php echo $disabled ?>"
+                                <?php empty($disabled) ? "disabled" : true; ?>
+                                   style="font-size: 20px;">
+                                <input type="radio" name="time-slot" id="" autocomplete="off" value="<?php echo $time['start']  ?>,<?php echo $time['end']  ?>"
+                                ><?php echo $time['name'] ?>
+                            </label>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
+        </section>
+    </main>
+    <button id="booking_btn" type="submit" class="menu-footer header-fixed btn" data-toggle="modal"
+            data-target="#exampleModal">
+        <div class="container">
+            <div id="logo" class="">
+                <h1><i class="fas fa-check"></i></i>
+                    Booking
+                </h1>
+            </div>
         </div>
-    </section>
-</main>
-<button id="booking_btn" type="button" class="menu-footer header-fixed btn" data-toggle="modal"
-        data-target="#exampleModal">
-    <div class="container">
-        <div id="logo" class="">
-            <h1><i class="fas fa-check"></i></i>
-                Booking
-            </h1>
-        </div>
-    </div>
-</button>
+    </button>
+</form>
+
 
 <!--==========================
   Footer
