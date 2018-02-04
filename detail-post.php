@@ -31,6 +31,17 @@ if (empty($result_old)) {
     $booking_id = $result_old['id'];
 }
 
+$_SESSION['booking_id'] = $booking_id;
+
+
+// =============== VALIDATE TOTAL FINGER ==================
+$sql_total = "SELECT SUM(qty) as total_qty FROM `booking_lists` WHERE booking_id = $booking_id";
+$total_qty = $mysqli->query($sql_total)->fetch_assoc();
+if (($total_qty['total_qty'] + $qty) > 10) {
+    echo json_encode(['error' => 'Nail over max limit.']);
+    die;
+}
+
 
 // =============== SELECT BOOKING ITEM CART ==================
 $sql_old_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $booking_id AND `nail_group_id` = $nail_group_id AND `nail_list_id` = $nail_list_id ORDER BY id DESC LIMIT 0,1";
@@ -42,11 +53,8 @@ VALUES ('$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$
 
 } else {
     $qty                 = $qty + $result_old_list['qty'];
-    if($qty >= 10){
-        echo json_encode(['error' => 'Nail over max limit.']); die;
-    }
     $amount              = $qty * $result_old_list['price'];
-    $sql_booking_list    = "UPDATE `booking_lists` SET `qty` = $qty , `amount` = $amount 
+    $sql_booking_list    = "UPDATE `booking_lists` SET `qty` = $qty , `amount` = $amount
 WHERE `booking_id` = $booking_id AND `nail_group_id` = $nail_group_id AND `nail_list_id` = $nail_list_id";
     $result_booking_list = $mysqli->query($sql_booking_list);
 }

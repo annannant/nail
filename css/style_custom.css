@@ -1681,3 +1681,31 @@ tr:nth-child(odd) {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+.text-open{
+    padding: 10px;text-align: center;color: #aaa;
+}
+
+.choose-time-slot.btn-default.active,
+.choose-time-slot.btn-default.focus,
+.choose-time-slot.btn-default:active,
+.choose-time-slot.btn-default:focus,
+.choose-time-slot.btn-default:hover {
+    color: #fff;
+    background-color: #76b9b8;
+    border-color: #689c9c;
+}
+
+.choose-time-slot {
+    margin-bottom: 10px !important;
+}
+
+.datepicker-days tr:nth-child(even){
+    background: #ffffff;
+}
+.datepicker-days tr:nth-child(even){
+    background: #ffffff;
+}
+.btn.btn-default.choose-time-slot.disabled{
+    background-color: #eee;
+}

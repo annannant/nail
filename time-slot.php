@@ -2,24 +2,16 @@
 include 'mysql_connection.php';
 include 'check_login.php';
 
-$member_id = $_SESSION['member']['id'];
 
-$sql_cart = "SELECT *  FROM `bookings` WHERE `member_id` = $member_id AND `booking_status` = 'cart' ORDER BY id DESC LIMIT 0,1 ";
-$cart     = $mysqli->query($sql_cart)->fetch_assoc();
+$date_selected = empty($_GET['date']) ? date('d-m-Y') : $_GET['date'];
 
-$cart_id          = $cart['id'];
-$sql_cart_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $cart_id";
-$result_cart_list = $mysqli->query($sql_cart_list);
-
-$cart_list = [];
-if (!empty($result_cart_list)) {
-    while ($row_list = $result_cart_list->fetch_assoc()) {
-        $group_id               = $row_list['nail_group_id'];
-        $cart_list[$group_id][] = $row_list;
-    }
+$sql    = "SELECT * FROM `time_slots` ORDER BY `time_slots`.`id`  ASC";
+$result = $mysqli->query($sql);
+$times  = [];
+while ($row = $result->fetch_assoc()) {
+    $times[] = $row;
 }
 
-$total_price = 0;
 
 ?>
 <!DOCTYPE html>
@@ -35,6 +27,10 @@ $total_price = 0;
     <script src="carousel/jquery/jquery.touchSwipe.min.js"></script>
     <link rel="stylesheet prefetch" href="carousel/css/bootstrap.min.css">
     <script src="carousel/jquery/prefixfree.min.js"></script>
+
+    <link href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet">
+    <script src="lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
 </head>
 
 <body>
@@ -46,7 +42,7 @@ $total_price = 0;
 <header id="header" class="header-fixed">
     <div class="container">
         <div id="logo" class="pull-left">
-            <h1><a href="#" class="scrollto">Cart</a></h1>
+            <h1><a href="#" class="scrollto">Booking Time</a></h1>
         </div>
         <?php include_once 'include_nav.php'; ?>
     </div>
@@ -96,98 +92,99 @@ $total_price = 0;
     <!--==========================
       More Features Section
     ============================-->
-    <section id="" class="cart" style="margin-top: 11px; padding-bottom: 50px;">
-
-        <?php if (empty($cart_list)) { ?>
-            <div class="cart-is-empty">
-                <?php echo " No items in cart. "; ?>
-            </div>
-        <?php } ?>
-
-        <?php foreach ($cart_list as $group => $list) { ?>
-
-            <div class="container container-cart">
-                <div class="row header">
-                    <div class="col-2 row-checkbox" style="    margin-top: -10px;">
-                        <label class="container-label">
-                            <input type="checkbox"
-                                   id="main_group_<?php echo $list[0]['nail_group_id'] ?>"
-                                   data-group="<?php echo $list[0]['nail_group_id'] ?>"
-                                   class="chk_main group_<?php echo $list[0]['nail_group_id'] ?>"
-                                   checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                    <div class="col-8 row-detail">
-                        <label style="font-size: 16px;"><?php echo $list[0]['nail_group_name'] ?></label>
-                        <div class="input-group" style="width: 120px;">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div><a href="detail.php?id=<?php echo $list[0]['nail_group_id'] ?>"
-                                class="sf-with-ul" title="Edit"><i class="fas fa-edit"></i></a></div>
+    <section id="" class="section-bg" style="padding-top: 50px;padding-bottom: 10px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <div class="section-header" data-wow-duration="1s"
+                         style="visibility: visible; animation-duration: 1s; animation-name: fadeIn;">
+                        <h3 class="" style="font-weight: normal;">Date : </h3>
                     </div>
                 </div>
-
-                <?php foreach ($list as $item) { ?>
-                    <div class="row">
-                        <div class="col-2 row-checkbox">
-                            <label class="container-label">
-                                <input type="checkbox" checked="checked"
-                                       data-id="<?php echo $item['id'] ?>"
-                                       data-group="<?php echo $item['nail_group_id'] ?>"
-                                       class="chk chk_list item_group_<?php echo $item['nail_group_id'] ?>
-                                       item_<?php echo $item['id'] ?>">
-
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                        <div class="col-8 row-detail">
-                            <div style="margin-bottom: 10px;">
-                                #<?php echo $item['nail_list_name'] ?>
-                            </div>
-                            <div class="input-group" style="width: 120px;">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-number btn-qty"
-                                            data-type="minus"
-                                            data-id="<?php echo $item['id'] ?>"
-                                            data-field="quant[<?php echo $item['id'] ?>]">
-                                        <span class="glyphicon glyphicon-minus"></span>
-                                    </button>
-                                </div>
-                                <input type="text" id="quantity_<?php echo $item['id'] ?>"
-                                       data-id="<?php echo $item['id'] ?>"
-                                       data-price="<?php echo $item['price'] ?>"
-                                       name="quant[<?php echo $item['id'] ?>]"
-                                       class="form-control input-number input-qty"
-                                       value="<?php echo $item['qty'] ?>" min="1" max="10">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-number btn-qty" data-type="plus"
-                                            data-id="<?php echo $item['id'] ?>"
-                                            data-field="quant[<?php echo $item['id'] ?>]">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div id="price<?php echo $item['id'] ?>" data-val="<?php echo $item['price'] ?>">
-                                ฿<?php echo $item['price'] ?>
-                            </div>
-                            <?php
-                            $total_price += $item['amount'];
-                            ?>
+                <div class="col-9">
+                    <div class="input-group mb-3">
+                        <input type="text" id="date" name="date" value="<?php echo $date_selected ?>"
+                               class="form-control" style="margin-top: 18px;width: 85%;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"
+                                  style="margin-top: 18px;height: 34px;font-size: 15px;">
+                                <i class="far fa-calendar-alt"></i></span>
                         </div>
                     </div>
-                <?php } ?>
+                </div>
             </div>
-        <?php } ?>
+        </div>
+    </section>
+    <script>
+        var date = new Date();
+        date.setDate(date.getDate());
+        $('#date').datepicker({
+            "format": 'dd-mm-yyyy',
+            "setDate": new Date(),
+            "startDate": date,
+            "autoclose": true
+        });
 
-    </section><!-- #more-features -->
+        $('#date').on('change', function () {
+            window.location.href = 'time-slot.php?date=' + $(this).val();
+        });
 
+        $('#booking_btn').on('click', function () {
+            // var data = {
+            //     "qty": $('#quantity').val(),
+            //     "price": $('.choose-time-slot.active').attr('data-price'),
+            //     "name": $('.choose-time-slot.active').attr('data-name'),
+            //     "group_name": $('.choose-time-slot.active').attr('data-group-name'),
+            //     "nail_list_id": $('.choose-time-slot.active').attr('data-id'),
+            //     "nail_group_id": $('.choose-time-slot.active').attr('data-group-id')
+            // };
+            //
+            // if (data.nail_list_id === undefined) {
+            //     alert('Please choose nail!');
+            //     return;
+            // }
 
+        });
+
+    </script>
+    <div class="text-open">Open 11.30 - 20.30</div>
+    <section id="" class="" style="padding: 0px 20px 20px 20px;min-height: 390px;">
+        <div class="container">
+            <div class="row">
+                <div class="btn-group" data-toggle="buttons">
+                    <?php foreach ($times as $time) {
+
+                        $disabled = '';
+                        $start    = date('YmdHis', strtotime($date_selected . ' ' . $time['start']));
+                        $end      = date('YmdHis', strtotime($date_selected . ' ' . $time['end']));
+
+                        if ($start < date('YmdHis') || $end < date('YmdHis')) {
+                            $disabled = 'disabled';
+                        }
+
+                        ?>
+                        <label class="col-6 btn btn-default option choose-time-slot <?php echo $disabled ?>"
+                               <?php empty($disabled)? "disabled": true; ?>
+                               style="font-size: 20px;">
+                            <input type="radio" name="time-slot" id="" autocomplete="off"
+                            ><?php echo $time['name'] ?>
+                        </label>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
-
+<button id="booking_btn" type="button" class="menu-footer header-fixed btn" data-toggle="modal"
+        data-target="#exampleModal">
+    <div class="container">
+        <div id="logo" class="">
+            <h1><i class="fas fa-check"></i></i>
+                Booking
+            </h1>
+        </div>
+    </div>
+</button>
 
 <!--==========================
   Footer
@@ -218,6 +215,7 @@ $total_price = 0;
             </div>
         </div>
     </div>
+    <input type="hidden" id="booking_id" value="<?php echo $cart_id; ?>">
 <?php } ?>
 
 <input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member'])) ? 'true' : 'false' ?>">
@@ -290,6 +288,7 @@ $total_price = 0;
 
     $('#next_to_order_btn').on('click', function () {
 
+        var booking_id = $('#booking_id').val();
         var dataUpdate = [];
 
         $('.chk').each(function () {
@@ -302,12 +301,14 @@ $total_price = 0;
         });
 
         var postData = {
+            "booking_id": booking_id,
             "data": dataUpdate
         };
 
         $.post("cart-post.php", postData, function (data) {
-            window.location.href = 'time-slot.php';
-        });
+            window.location.href = 'select-time.php';
+        }, "json");
+
     });
 
 </script>
