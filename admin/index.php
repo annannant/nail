@@ -73,7 +73,7 @@
         </nav>
 
 
-        <div class="content">
+       <!--  <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -139,10 +139,10 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
                                 <h4 class="title">Table on Plain Background</h4>
@@ -206,7 +206,7 @@
                             </div>
                         </div>
                     </div>
-
+ -->
 
                 </div>
             </div>

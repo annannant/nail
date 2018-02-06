@@ -79,7 +79,7 @@ $result_nail = $mysqli->query($sql_nail);
                                         <div class="col-md-7">
                                             <div class="form-group">
                                                 <label>Name</label>
-                                                <input name="name" type="text" class="form-control border-input" placeholder="Company" value="">
+                                                <input name="name" type="text" class="form-control border-input" placeholder="Name" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@ $result_nail = $mysqli->query($sql_nail);
                                         <div class="col-md-7">
                                             <div class="form-group">
                                                 <label>Price</label>
-                                                <input name="price" type="text" class="form-control border-input" placeholder="Company" value="">
+                                                <input name="price" type="text" class="form-control border-input" placeholder="Price" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@ $result_nail = $mysqli->query($sql_nail);
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Detail</label>
-                                                <textarea name="detail" rows="5" class="form-control border-input" placeholder="Here can be your description" value=""></textarea>
+                                                <textarea name="detail" rows="5" class="form-control border-input" placeholder="Detail" value=""></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@ $result_nail = $mysqli->query($sql_nail);
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Image</label>
-                                                <input type="file"  name="file_nail" class="form-control border-input" placeholder="Home Address" value="">
+                                                <input type="file"  name="file_nail" class="form-control border-input" placeholder="" value="">
                                             </div>
                                         </div>
                                     </div>

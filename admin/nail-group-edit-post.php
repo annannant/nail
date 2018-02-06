@@ -24,7 +24,7 @@ if(!empty($_FILES["pic"]["tmp_name"])){
 }
 
 
-// ------------------------ Update to ddatabase ------------------------
+// ------------------------ Update to database ------------------------
 $sql = "UPDATE `nail_groups` SET `name` = '$name', 
 `pic` = '$pic' WHERE `nail_groups`.`id` = $id";
 if ($mysqli->query($sql) === true) {

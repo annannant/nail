@@ -1,4 +1,4 @@
 <?php
 
-$front_url = 'http://localhost/story-nail/';
-$admin_url = 'http://localhost/story-nail/admin/';
+$front_url = 'http://localhost/story-master/';
+$admin_url = 'http://localhost/story-master/admin/';

@@ -63,8 +63,7 @@ if (!empty($_POST)) {
                 <div class="col-lg-4 col-md-4">
                     <div class="contact-about">
                         <div class="user" style="padding: 20px; text-align: center;">
-                            <i class="fa fa-diamond" aria-hidden="true"
-                               style="font-size: 100px;    color: #639e9d;"></i>
+                            <i class="far fa-gem" style="font-size: 100px;    color: #639e9d;"></i>
                         </div>
                     </div>
                 </div>

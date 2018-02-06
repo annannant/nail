@@ -2,27 +2,24 @@
 session_start();
 include 'mysql_connection.php';
 
-// -------------------- GET NAIL --------------- //
+// -------------------- GET NAIL ID --------------- //
 $nail_group_id = $_GET['id'];
 
+// -------------------- FIND GROUP DATA --------------- //
 $sql_group    = "SELECT * FROM nail_groups WHERE id = $nail_group_id";
 $result_group = $mysqli->query($sql_group);
 $data_group   = $mysqli->query($sql_group)->fetch_assoc();
 
-$arr_group = [];
-while ($row = $result_group->fetch_assoc()) {
-    $arr_group[] = $row;
-}
-
-$sql_list    = "SELECT nail_lists.*, nail_groups.name as group_name  
-FROM nail_lists 
-INNER JOIN nail_groups ON nail_lists.nail_group_id = nail_groups.id
-WHERE nail_group_id = $nail_group_id ";
+// -------------------- FIND LIST NAIL --------------- //
+$sql_list = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id ";
 $result_list = $mysqli->query($sql_list);
-$arr_list    = [];
+
+
+$arr_lis = [];
 while ($row = $result_list->fetch_assoc()) {
     $arr_list[] = $row;
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -49,8 +46,8 @@ while ($row = $result_list->fetch_assoc()) {
 <header id="header" class="header-fixed">
     <div class="container">
         <div id="logo" class="pull-left">
-            <h1 style="font-size: 25px;margin-top: -7px;"><a href="#"
-                                                             class="scrollto"><?php echo $data_group['name'] ?></a></h1>
+            <h1 style="font-size: 25px;margin-top: -7px;">
+                <a href="#" class="scrollto"><?php echo $data_group['name'] ?></a></h1>
         </div>
         <?php include_once 'include_nav.php'; ?>
     </div>
@@ -109,9 +106,8 @@ while ($row = $result_list->fetch_assoc()) {
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                    <?php foreach ($arr_group as $group) { ?>
-                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    <?php } ?>
+                    
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
 
                     <?php
                     $no = 1;
@@ -123,12 +119,9 @@ while ($row = $result_list->fetch_assoc()) {
 
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
-                    <?php foreach ($arr_group as $group) { ?>
-                        <div class="item active">
-                            <img src="<?php echo $group['pic']; ?>">
-                        </div>
-                    <?php } ?>
-
+                    <div class="item active">
+                            <img src="<?php echo $data_group['pic']; ?>">
+                    </div>  
                     <?php
                     $no_img = 1;
                     foreach ($arr_list as $list) { ?>
@@ -178,7 +171,9 @@ while ($row = $result_list->fetch_assoc()) {
                                 <?php
                                 $sum_price = 0;
                                 foreach ($arr_list as $list) {
-                                    $sum_price = $list['price'];
+
+                                    $sum_price += $list['price'];
+                                    
                                     ?>
                                     <li>
                                         #<?php echo $list['name'] ?>
@@ -227,7 +222,7 @@ while ($row = $result_list->fetch_assoc()) {
                                data-id="<?php echo $list['id'] ?>"
                                data-price="<?php echo $list['price'] ?>"
                                data-name="<?php echo $list['name'] ?>"
-                               data-group-name="<?php echo $list['group_name'] ?>"
+                               data-group-name="<?php echo $data_group['name'] ?>"
                                data-group-id="<?php echo $list['nail_group_id'] ?>"
                                style="font-size: 12px;">
                             <input type="radio" name="group" id="<?php echo $list['id'] ?>"
@@ -266,7 +261,7 @@ while ($row = $result_list->fetch_assoc()) {
 <!--==========================
   Footer
 ============================-->
-<button id="add-to-cart" type="button" class="menu-footer header-fixed btn" data-toggle="modal"
+<button id="add-cart" type="button" class="menu-footer header-fixed btn" data-toggle="modal"
         data-target="#exampleModal">
     <div class="container">
         <div id="logo" class="">
@@ -278,15 +273,8 @@ while ($row = $result_list->fetch_assoc()) {
 </button>
 <input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member'])) ? 'true' : 'false' ?>">
 <script>
-    $('#add-to-cart').on('click', function () {
-
-        if ($('#alreadyLogin').val() == 'false') {
-            window.location.href = 'login.php';
-            return;
-        }
-
-        $('.modal-cart').show().addClass('animated slideInUp');
-
+    $('#add-cart').on('click', function () {
+      $('.modal-cart').show().addClass('animated slideInUp');
     });
 
     $('.close-modal-cart').on('click', function () {
@@ -295,8 +283,9 @@ while ($row = $result_list->fetch_assoc()) {
 
     // ==================== Add To Cart ====================
     $('.add-item-cart').on('click', function () {
+
         var data = {
-            "qty": $('#quantity').val(),
+            "qty" : $('#quantity').val(),
             "price": $('.choose-nail-item.active').attr('data-price'),
             "name": $('.choose-nail-item.active').attr('data-name'),
             "group_name": $('.choose-nail-item.active').attr('data-group-name'),
@@ -311,12 +300,19 @@ while ($row = $result_list->fetch_assoc()) {
 
         $.post("detail-post.php", data, function (data) {
             if (data.error !== undefined) {
+                if(data.error == 'nologin'){
+                    window.location.href = 'login.php';
+                    return
+                }else{
                 alert(data.error);
-                return;
+                return;                    
+                }
+
             } else {
                 window.location.href = 'cart.php';
             }
         }, "json");
+
     });
 </script>
 

@@ -43,7 +43,7 @@ $page = 'nail-group'; // for menu
                     </button>
                     <a class="navbar-brand" href="#">New Nail</a>
                 </div>
-                <div class="collapse navbar-collapse">
+               <!--  <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -53,7 +53,7 @@ $page = 'nail-group'; // for menu
                         </li>
                     </ul>
 
-                </div>
+                </div> -->
             </div>
         </nav>
 

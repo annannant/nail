@@ -26,7 +26,7 @@ $total_price = 0;
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Avilon Bootstrap Template</title>
+    <title>Mystorynail</title>
     <?php include_once 'include_header.php'; ?>
 
     <link href="css/cs-style.css" rel="stylesheet">

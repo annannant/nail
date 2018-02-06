@@ -1,13 +1,23 @@
 <?php
 include 'mysql_connection.php';
-
-//echo "<pre>";
-//print_r($_POST);
-
 session_start();
+
+// echo "<pre>";
+// print_r($_POST);
+// [qty] => 4
+// [price] => 20
+// [name] => Chin-jang 03-4 (finger)
+// [group_name] => Chin-jang 03 -finger
+// [nail_list_id] => 34
+// [nail_group_id] => 7
+
+// -------- check login -----------
 if (empty($_SESSION['member'])) {
-    echo "<script>window.location.href='login.php'</script>";
+    echo json_encode(['error' => 'nologin']);
+    die;
 }
+
+// -------- end check login -----------
 
 $member_id       = $_SESSION['member']['id'];
 $status          = 'cart';
@@ -18,8 +28,12 @@ $price           = $_POST['price'];
 $nail_list_id    = $_POST['nail_list_id'];
 $nail_group_id   = $_POST['nail_group_id'];
 $amount          = $price * $qty;
+
+
 // =============== SELECT EXISTING CART ==================
-$sql_old    = "SELECT *  FROM `bookings` WHERE `member_id` = $member_id AND `booking_status` = 'cart' ORDER BY id DESC LIMIT 0,1 ";
+$sql_old    = "SELECT *  FROM `bookings` 
+WHERE `member_id` = $member_id AND `booking_status` = 'cart' 
+ORDER BY id DESC LIMIT 0,1 ";
 $result_old = $mysqli->query($sql_old)->fetch_assoc();
 // ------------ ถ้าไม่มัให้สร้าง CART ------------
 if (empty($result_old)) {
@@ -33,24 +47,23 @@ if (empty($result_old)) {
 
 $_SESSION['booking_id'] = $booking_id;
 
-
 // =============== VALIDATE TOTAL FINGER ==================
-$sql_total = "SELECT SUM(qty) as total_qty FROM `booking_lists` WHERE booking_id = $booking_id";
-$total_qty = $mysqli->query($sql_total)->fetch_assoc();
-if (($total_qty['total_qty'] + $qty) > 10) {
-    echo json_encode(['error' => 'Nail over max limit.']);
-    die;
-}
-
+// $sql_total = "SELECT SUM(qty) as total_qty FROM `booking_lists` WHERE booking_id = $booking_id";
+// $total_qty = $mysqli->query($sql_total)->fetch_assoc();
+// if (($total_qty['total_qty'] + $qty) > 10) {
+//     echo json_encode(['error' => 'Nail over max limit.']);
+//     die;
+// }
 
 // =============== SELECT BOOKING ITEM CART ==================
-$sql_old_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $booking_id AND `nail_group_id` = $nail_group_id AND `nail_list_id` = $nail_list_id ORDER BY id DESC LIMIT 0,1";
+$sql_old_list    = "SELECT *  FROM `booking_lists` 
+WHERE `booking_id` = $booking_id AND `nail_list_id` = $nail_list_id ORDER BY id DESC LIMIT 0,1";
 $result_old_list = $mysqli->query($sql_old_list)->fetch_assoc();
+
 if (empty($result_old_list)) {
     $sql_booking_list    = "INSERT INTO `booking_lists` (`booking_id`, `nail_group_id`, `nail_list_id`, `nail_group_name`, `nail_list_name`, `price`, `qty`, `amount`) 
 VALUES ('$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$nail_list_name', '$price', '$qty', '$amount')";
     $result_booking_list = $mysqli->query($sql_booking_list);
-
 } else {
     $qty                 = $qty + $result_old_list['qty'];
     $amount              = $qty * $result_old_list['price'];

@@ -7,10 +7,6 @@ include '../config.php';
 // print_r($_FILES);
 // die;
 
-if (empty($_POST)) {
-    echo "<script>window.location='nail-new.php'</script>";
-    die;
-}
 
 // // ------------------------ Upload File ------------------------
 $target_file = 'uploads/nail-list/' . 'list-' . date('YmdHis') . '.jpg';

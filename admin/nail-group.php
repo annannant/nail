@@ -46,7 +46,7 @@ $result_group = $mysqli->query($sql_nail);
                     </button>
                     <a class="navbar-brand" href="#">Nail Group</a>
                 </div>
-                <div class="collapse navbar-collapse">
+                <!-- <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -56,7 +56,7 @@ $result_group = $mysqli->query($sql_nail);
                         </li>
                     </ul>
 
-                </div>
+                </div> -->
             </div>
         </nav>
         <div class="content">
@@ -85,7 +85,7 @@ $result_group = $mysqli->query($sql_nail);
                                                 <div class="text-right">
                                                     <a href="nail-group-create.php" class="btn btn-info btn-fill btn-wd">
                                                         <i class="ti-plus"></i>
-                                                        Add Nail
+                                                        Add Nail 
                                                     </a>
                                                 </div>
                                             </div>

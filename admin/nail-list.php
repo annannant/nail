@@ -10,6 +10,7 @@ $sql_nail   = "SELECT * FROM `nail_lists` WHERE `nail_group_id`  = $nail_group_i
 $result_list = $mysqli->query($sql_nail);
 
 
+
 ?>
 
 <!doctype html>
@@ -20,7 +21,7 @@ $result_list = $mysqli->query($sql_nail);
     <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>Paper Dashboard by Creative Tim</title>
+    <title>Admin</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
@@ -48,7 +49,7 @@ $result_list = $mysqli->query($sql_nail);
                     </button>
                     <a class="navbar-brand" href="#">Nail List #<?php echo $nail_group_id?></a>
                 </div>
-                <div class="collapse navbar-collapse">
+                <!-- <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -58,7 +59,7 @@ $result_list = $mysqli->query($sql_nail);
                         </li>
                     </ul>
 
-                </div>
+                </div> -->
             </div>
         </nav>
         <div class="content">
@@ -88,6 +89,9 @@ $result_list = $mysqli->query($sql_nail);
                                             <div class="col-xs-12 detail">
                                                 <div class="numbers" style="font-size: 17px; text-align: left;">
                                                     <?php echo $row['name']; ?>
+                                                </div>
+                                                <div class="numbers" style="font-size: 17px; text-align: left;">
+                                                    ฿<?php echo $row['price']; ?>
                                                 </div>
                                             </div>
                                         </div>

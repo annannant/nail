@@ -25,6 +25,8 @@ if (!empty($_GET['collection_id'])) {
 $sql_nail    .= " GROUP BY nail_groups.id ORDER BY nail_groups.id DESC";
 $result_nail = $mysqli->query($sql_nail);
 
+//echo $sql_nail;
+//die;
 
 ?>
 <!DOCTYPE html>
@@ -78,9 +80,8 @@ $result_nail = $mysqli->query($sql_nail);
                                     </div>
                             </div>
                         </li>
-
                     <?php } ?>
-
+                </ul>
             </div>
             <div class="section-header">
                 <form id="nail-form" action="?" method="get" role="form" class="">
@@ -94,13 +95,11 @@ $result_nail = $mysqli->query($sql_nail);
                             <label class="" for="inputGroupSelect01"><i class="fas fa-paint-brush"></i>
                                 Type</label>
                             <div class="input-group mb-3">
-                                <select name="nail_type_id" class="custom-select select-nail" id="inputGroupSelect01">
+                                <select name="nail_type_id"
+                                        class="custom-select select-nail select-test" id="inputGroupSelect01">
                                     <option value="">All</option>
-                                    <?php
-                                    while ($row_type = $result_type->fetch_assoc()) {
-                                        $type_selected = ($nail_type_id == $row_type['id']) ? 'selected' : '';
-
-                                        ?>
+                                    <?php while ($row_type = $result_type->fetch_assoc()) {
+                                        $type_selected = ($nail_type_id == $row_type['id']) ? 'selected' : '';  ?>
                                         <option value="<?php echo $row_type['id']; ?>" <?php echo $type_selected; ?>>
                                             <?php echo $row_type['name'] ?>
                                         </option>
@@ -116,7 +115,7 @@ $result_nail = $mysqli->query($sql_nail);
                             <label class="" for="inputGroupSelect02"><i class="fas fa-paint-brush"></i>
                                 Collection</label>
                             <div class="input-group mb-3">
-                                <select name="collection_id" class="custom-select select-nail" id="inputGroupSelect02">
+                                <select name="collection_id" class="custom-select select-nail select-test" id="inputGroupSelect02">
                                     <option value="">All</option>
                                     <?php
                                     while ($row_collection = $result_collection->fetch_assoc()) {
@@ -164,6 +163,8 @@ $result_nail = $mysqli->query($sql_nail);
 <?php include_once 'include_footer.php'; ?>
 <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 <script>
+
+
     $(document).ready(function () {
         $('#myCarousel').carousel({
             interval: 10000

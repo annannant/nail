@@ -4,7 +4,7 @@ include '../mysql_connection.php';
 
 
 $page = 'nail-group'; // for menu
-$id = $_GET['id'];//เอาค่าเดิมมาใส่
+$id = $_GET['id'];//เอาค่าเดิมมาใส่จากurl เวลาrun
 $sql_nail = "SELECT * FROM `nail_lists` WHERE id = $id";
 $result_nail = $mysqli->query($sql_nail);
 $row = $result_nail->fetch_assoc();
@@ -50,7 +50,7 @@ $row = $result_nail->fetch_assoc();
                     </button>
                     <a class="navbar-brand" href="#">New Nail</a>
                 </div>
-                <div class="collapse navbar-collapse">
+                <!-- <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -60,7 +60,7 @@ $row = $result_nail->fetch_assoc();
                         </li>
                     </ul>
 
-                </div>
+                </div> -->
             </div>
         </nav>
 

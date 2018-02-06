@@ -41,9 +41,9 @@ $page = 'nails'; // for menu
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Nail Group Edit</a>
+                    <a class="navbar-brand" href="#">Add Nail Group </a>
                 </div>
-                <div class="collapse navbar-collapse">
+                <!-- <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -53,7 +53,7 @@ $page = 'nails'; // for menu
                         </li>
                     </ul>
 
-                </div>
+                </div> -->
             </div>
         </nav>
 
@@ -65,7 +65,7 @@ $page = 'nails'; // for menu
                     <div class="col-lg-8 col-md-7">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Edit Nail Group</h4>
+                                <h4 class="title"> Add Nail Group </h4>
                             </div>
                             <div class="content">
                                 <form action="nail-group-create-post.php" method="post" enctype="multipart/form-data">
