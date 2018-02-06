@@ -4,6 +4,7 @@ session_start();
 
 // echo "<pre>";
 // print_r($_POST);
+// die;
 // [qty] => 4
 // [price] => 20
 // [name] => Chin-jang 03-4 (finger)
@@ -19,16 +20,44 @@ if (empty($_SESSION['member'])) {
 
 // -------- end check login -----------
 
+$data            = [];
 $member_id       = $_SESSION['member']['id'];
 $status          = 'cart';
-$qty             = $_POST['qty'];
-$nail_list_name  = $_POST['name'];
-$nail_group_name = $_POST['group_name'];
-$price           = $_POST['price'];
-$nail_list_id    = $_POST['nail_list_id'];
+$type            = $_POST['type'];
 $nail_group_id   = $_POST['nail_group_id'];
-$amount          = $price * $qty;
+$nail_group_name = $_POST['group_name'];
 
+if ($type == 'list') {
+    $data[] = [
+        'qty'            => $_POST['qty'],
+        'nail_list_name' => $_POST['name'],
+        'price'          => $_POST['price'],
+        'nail_list_id'   => $_POST['nail_list_id'],
+        'amount'         => $_POST['price'] * $_POST['qty'],
+        'type'           => 'list'
+    ];
+
+} else {
+    $sql_list    = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id ";
+    $result_list = $mysqli->query($sql_list);
+    $count       = $mysqli->query($sql_list)->num_rows;
+
+    $price_set = $_POST['price_set'];
+    $price     = ($price_set / $count);
+
+    while ($row = $result_list->fetch_assoc()) {
+        if (!empty($row['qty_set'])) {
+            $row['qty']            = 1;
+            $row['nail_list_name'] = $row['name'];
+            $row['nail_list_id']   = $row['id'];
+            $row['type']           = 'group';
+            $row['price']          = $price;
+            $data[]                = $row;
+        }
+    }
+}
+
+alert($data, 1);
 
 // =============== SELECT EXISTING CART ==================
 $sql_old    = "SELECT *  FROM `bookings` 
