@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Avilon Bootstrap Template</title>
     <?php include_once 'include_header.php'; ?>
-
 </head>
 
 <body>
@@ -15,7 +14,7 @@
 <header id="header" class="header-fixed">
     <div class="container">
 
-        <div id="logo" class="pull-left">
+        <div id="logo" class="">
             <h1><a href="#" class="scrollto">Register</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="#intro"><img src="img/logo.png" alt="" title=""></a> -->
@@ -50,7 +49,7 @@
                     <div class="form">
                         <div id="sendmessage">Your message has been sent. Thank you!</div>
                         <div id="errormessage"></div>
-                        <form action="" method="post" role="form" class="contactForm">
+                        <form action="register-post.php" method="post" role="form" >
                             <div class="form-row">
                                 <div class="form-group col-lg-6">
                                     <input type="text" name="name" class="form-control" id="name"

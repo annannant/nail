@@ -2,20 +2,19 @@
 include 'mysql_connection.php';
 include 'check_login.php';
 
-$member_id = $_SESSION['member']['id'];
+$member_id  = $_SESSION['member']['id'];
+$booking_id = $_GET['booking_id'];
 
-$sql_cart = "SELECT *  FROM `bookings` WHERE `member_id` = $member_id AND `booking_status` = 'cart' ORDER BY id DESC LIMIT 0,1 ";
-$cart     = $mysqli->query($sql_cart)->fetch_assoc();
+$sql_booking = "SELECT *  FROM `bookings` WHERE `id` = $booking_id";
+$booking_data     = $mysqli->query($sql_booking)->fetch_assoc();
 
-$cart_id          = $cart['id'];
-$sql_cart_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $cart_id";
-$result_cart_list = $mysqli->query($sql_cart_list);
+$sql_booking_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $booking_id";
+$result_booking_list = $mysqli->query($sql_booking_list);
 
-$cart_list = [];
-if (!empty($result_cart_list)) {
-    while ($row_list = $result_cart_list->fetch_assoc()) {
-        $group_id               = $row_list['nail_group_id'];
-        $cart_list[$group_id][] = $row_list;
+$booking_list = [];
+if (!empty($result_booking_list)) {
+    while ($row_list = $result_booking_list->fetch_assoc()) {
+        $booking_list[] = $row_list;
     }
 }
 
@@ -47,41 +46,14 @@ $total_price = 0;
     <div class="container">
         <div class="container">
             <div id="logo" class="">
-                <h1><a href="#" class="scrollto">Cart</a></h1>
+                <h1><a href="#" class="scrollto">BILL</a></h1>
             </div>
-            <a href="javascript:history.go(-1)" class="menu-nav-toggle pull-left"><i class="fas fa-chevron-left"></i></a>
+            <a href="javascript:history.go(-1)" class="menu-nav-toggle pull-left"><i
+                        class="fas fa-chevron-left"></i></a>
+            <a href="cart.php" class="menu-nav-toggle"><i class="fas fa-shopping-basket"></i></a>
             <?php include_once 'include_nav.php'; ?>
         </div>
 </header>
-
-<nav id="nav-menu-container">
-    <ul class="nav-menu">
-        <li class="menu-active"><a href="index.php">Home</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#team">Team</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li class="menu-has-children"><a href="">Drop Down</a>
-            <ul>
-                <li><a href="#">Drop Down 1</a></li>
-                <li class="menu-has-children"><a href="#">Drop Down 2</a>
-                    <ul>
-                        <li><a href="#">Deep Drop Down 1</a></li>
-                        <li><a href="#">Deep Drop Down 2</a></li>
-                        <li><a href="#">Deep Drop Down 3</a></li>
-                        <li><a href="#">Deep Drop Down 4</a></li>
-                        <li><a href="#">Deep Drop Down 5</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Drop Down 3</a></li>
-                <li><a href="#">Drop Down 4</a></li>
-                <li><a href="#">Drop Down 5</a></li>
-            </ul>
-        </li>
-        <li><a href="#contact">Contact Us</a></li>
-    </ul>
-</nav><!-- #nav-menu-container -->
 
 <script>
     $(document).on('click', '#mobile-nav-toggle', function (e) {
@@ -100,12 +72,37 @@ $total_price = 0;
     ============================-->
     <section id="" class="cart" style="margin-top: 11px; padding-bottom: 50px;">
 
-        <?php if (empty($cart_list)) { ?>
-            <div class="cart-is-empty">
-                <?php echo " No items in cart. "; ?>
-            </div>
-        <?php } ?>
 
+        <div class="container container-cart">
+            <div class="row header" style="line-height: 35px;font-size: 18px;border-bottom: 1px solid #aaa;">
+                <div class="col-6">
+                    <div>Customer ID</div>
+                </div>
+                <div class="col-6">
+                    <div><?php echo $booking_data['member_id']; ?></div>
+                </div>
+                <div class="col-6">
+                    <div>Booking ID</div>
+                </div>
+                <div class="col-6" >
+                    <div><?php echo $booking_data['id']; ?></div>
+                </div>
+                <div class="col-6"  style="font-size: 16px;">
+                    <div>DATE : <?php echo date('d/m/Y', strtotime($booking_data['booking_date'])); ?></div>
+                </div>
+                <div class="col-6"  style="font-size: 16px;">
+                    <div>TIME :  <?php echo date('H:i', strtotime($booking_data['time_start'])); ?> -  <?php echo date('H:i', strtotime($booking_data['time_end'])); ?></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-4">ddd</div>
+                        <div class="col-64">xxx</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php foreach ($cart_list as $group => $list) { ?>
 
             <div class="container container-cart">
@@ -150,10 +147,10 @@ $total_price = 0;
                                 #<?php echo $item['nail_list_name'] ?>
                             </div>
                             <?php
-                                $display_none = '';
-                                if($item['type'] == 'group'){
-                                    $display_none = 'display:none;';
-                                }
+                            $display_none = '';
+                            if ($item['type'] == 'group') {
+                                $display_none = 'display:none;';
+                            }
                             ?>
                             <div class="input-group" style="width: 120px;<?php echo $display_none ?>">
                                 <div class="input-group-btn">
@@ -187,14 +184,15 @@ $total_price = 0;
                             $total_price += $item['amount'];
                             ?>
 
-                            <?php if($item['type'] == 'group'){ ?>
+                            <?php if ($item['type'] == 'group') { ?>
                                 <div class="col-12" style="text-align: left;text-align: left;margin-top: 20px;">
                                     <div style="">
-                                        <a href="cart-delete.php?id=<?php echo $item['id'] ?>" onclick="return confirm('Are you sure?')"
+                                        <a href="cart-delete.php?id=<?php echo $item['id'] ?>"
+                                           onclick="return confirm('Are you sure?')"
                                            class="sf-with-ul" title="Edit"><i class="fas fa-trash-alt"></i></a>
                                     </div>
                                 </div>
-                            <?php }?>
+                            <?php } ?>
                         </div>
                     </div>
                 <?php } ?>
@@ -243,9 +241,9 @@ $total_price = 0;
     // ---------------- Price ----------------
     $('.input-qty').on('change', function () {
 
-        if($(this).val() == 0){
-            if(confirm("Do you want to delete this item ?")){
-                window.location.href="cart-delete.php?id="+ $(this).attr('data-id') +"";
+        if ($(this).val() == 0) {
+            if (confirm("Do you want to delete this item ?")) {
+                window.location.href = "cart-delete.php?id=" + $(this).attr('data-id') + "";
                 return
             }
         }
@@ -318,8 +316,8 @@ $total_price = 0;
         // check 10
         var list_qty = 0;
         $('.chk_list[data-type="list"]:checked').each(function () {
-            var qty = '#quantity_'+ $(this).attr('data-id');
-            qty = parseInt($(qty).val());
+            var qty = '#quantity_' + $(this).attr('data-id');
+            qty     = parseInt($(qty).val());
             list_qty += qty;
         });
 
@@ -328,7 +326,7 @@ $total_price = 0;
             group_qty += 10;
         });
 
-        if((list_qty + group_qty) != 10){
+        if ((list_qty + group_qty) != 10) {
             alert("Please choose total nail equal 10 item");
             return;
         }

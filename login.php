@@ -40,7 +40,7 @@ if (!empty($_POST)) {
 <header id="header" class="header-fixed">
     <div class="container">
 
-        <div id="logo" class="pull-left">
+        <div id="logo" class="">
             <h1><a href="#" class="scrollto">Login</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="#intro"><img src="img/logo.png" alt="" title=""></a> -->

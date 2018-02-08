@@ -11,7 +11,7 @@ $result_group = $mysqli->query($sql_group);
 $data_group   = $mysqli->query($sql_group)->fetch_assoc();
 
 // -------------------- FIND LIST NAIL --------------- //
-$sql_list = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id ";
+$sql_list    = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id ";
 $result_list = $mysqli->query($sql_list);
 
 
@@ -45,10 +45,11 @@ while ($row = $result_list->fetch_assoc()) {
 ============================-->
 <header id="header" class="header-fixed">
     <div class="container">
-        <div id="logo" class="pull-left">
-            <h1 style="font-size: 25px;margin-top: -7px;">
-                <a href="#" class="scrollto"><?php echo $data_group['name'] ?></a></h1>
+        <div id="logo" class="">
+            <h1><a href="#" class="scrollto" style="font-size: 18px;"><?php echo $data_group['name'] ?></a></h1>
         </div>
+        <a href="cart.php" class="menu-nav-toggle"><i class="fas fa-shopping-basket"></i></a>
+
         <?php include_once 'include_nav.php'; ?>
     </div>
 </header>
@@ -106,7 +107,7 @@ while ($row = $result_list->fetch_assoc()) {
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                    
+
                     <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
 
                     <?php
@@ -120,8 +121,8 @@ while ($row = $result_list->fetch_assoc()) {
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                            <img src="<?php echo $data_group['pic']; ?>">
-                    </div>  
+                        <img src="<?php echo $data_group['pic']; ?>">
+                    </div>
                     <?php
                     $no_img = 1;
                     foreach ($arr_list as $list) { ?>
@@ -169,12 +170,7 @@ while ($row = $result_list->fetch_assoc()) {
                             </h4>
                             <ul style="font-size: 18px;">
                                 <?php
-                                $sum_price = 0;
-                                foreach ($arr_list as $list) {
-
-                                    $sum_price += $list['price'];
-                                    
-                                    ?>
+                                foreach ($arr_list as $list) { ?>
                                     <li>
                                         #<?php echo $list['name'] ?>
                                         <div style="font-size: 14px;color: gray;"><?php echo $list['detail'] ?></div>
@@ -183,7 +179,7 @@ while ($row = $result_list->fetch_assoc()) {
                             </ul>
                             <div style="padding-bottom: 15px">
                                 <h4>
-                                    Price set : ฿<?php echo $sum_price; ?>
+                                    Price set : ฿<?php echo $data_group['price_set']; ?>
                                 </h4>
                             </div>
                         </div>
@@ -224,11 +220,21 @@ while ($row = $result_list->fetch_assoc()) {
                                data-name="<?php echo $list['name'] ?>"
                                data-group-name="<?php echo $data_group['name'] ?>"
                                data-group-id="<?php echo $list['nail_group_id'] ?>"
+                               data-type="list"
                                style="font-size: 12px;">
                             <input type="radio" name="group" id="<?php echo $list['id'] ?>"
                                    autocomplete="off"><?php echo $list['name'] ?>
                         </label>
                     <?php } ?>
+
+                    <label class="btn btn-default  option choose-nail-item price-set-item" style="font-size: 12px;"
+                           data-group-name="<?php echo $data_group['name'] ?>"
+                           data-group-id="<?php echo $list['nail_group_id'] ?>"
+                           data-price-set="<?php echo $data_group['price_set']; ?>"
+                           data-type="group">
+                        <input type="radio" name="group" id="<?php echo $list['id'] ?>"
+                               autocomplete="off">Price set : ฿<?php echo $data_group['price_set']; ?>
+                    </label>
                 </div>
                 <!--Checkbox butons-->
             </div>
@@ -274,7 +280,7 @@ while ($row = $result_list->fetch_assoc()) {
 <input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member'])) ? 'true' : 'false' ?>">
 <script>
     $('#add-cart').on('click', function () {
-      $('.modal-cart').show().addClass('animated slideInUp');
+        $('.modal-cart').show().addClass('animated slideInUp');
     });
 
     $('.close-modal-cart').on('click', function () {
@@ -283,29 +289,30 @@ while ($row = $result_list->fetch_assoc()) {
 
     // ==================== Add To Cart ====================
     $('.add-item-cart').on('click', function () {
-
         var data = {
-            "qty" : $('#quantity').val(),
+            "qty": $('#quantity').val(),
+            "type": $('.choose-nail-item.active').attr('data-type'),
             "price": $('.choose-nail-item.active').attr('data-price'),
             "name": $('.choose-nail-item.active').attr('data-name'),
             "group_name": $('.choose-nail-item.active').attr('data-group-name'),
             "nail_list_id": $('.choose-nail-item.active').attr('data-id'),
-            "nail_group_id": $('.choose-nail-item.active').attr('data-group-id')
+            "nail_group_id": $('.choose-nail-item.active').attr('data-group-id'),
+            "price_set": $('.choose-nail-item.active').attr('data-price-set')
         };
 
-        if (data.nail_list_id === undefined) {
+        if (data.type === undefined) {
             alert('Please choose nail!');
             return;
         }
 
         $.post("detail-post.php", data, function (data) {
             if (data.error !== undefined) {
-                if(data.error == 'nologin'){
+                if (data.error == 'nologin') {
                     window.location.href = 'login.php';
                     return
-                }else{
-                alert(data.error);
-                return;                    
+                } else {
+                    alert(data.error);
+                    return;
                 }
 
             } else {

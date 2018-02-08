@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'mysql_connection.php';
 
 // -------------------- GET NAIL --------------- //
@@ -45,11 +46,13 @@ $result_nail = $mysqli->query($sql_nail);
 <header id="header" class="header-fixed">
     <div class="container">
 
-        <div id="logo" class="pull-left">
+        <div id="logo" class="">
             <h1><a href="#" class="scrollto">My Story Nail</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="#intro"><img src="img/logo.png" alt="" title=""></a> -->
         </div>
+        <a href="cart.php" class="menu-nav-toggle"><i class="fas fa-shopping-basket"></i></a>
+        <!--        <button type="button" id="mobile-nav-toggle" class="menu-nav-toggle user"><i class="fas fa-user"></i></button>-->
         <?php include_once 'include_nav.php'; ?>
     </div>
 </header><!-- #header -->

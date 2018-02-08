@@ -41,9 +41,11 @@ while ($row = $result->fetch_assoc()) {
 ============================-->
 <header id="header" class="header-fixed">
     <div class="container">
-        <div id="logo" class="pull-left">
+        <div id="logo" class="">
             <h1><a href="#" class="scrollto">Booking Time</a></h1>
         </div>
+        <a href="javascript:history.go(-1)" class="menu-nav-toggle pull-left"><i class="fas fa-chevron-left"></i></a>
+        <a href="cart.php" class="menu-nav-toggle"><i class="fas fa-shopping-basket"></i></a>
         <?php include_once 'include_nav.php'; ?>
     </div>
 </header>
@@ -158,7 +160,7 @@ while ($row = $result->fetch_assoc()) {
             </div>
         </section>
     </main>
-    <button id="booking_btn" type="submit" class="menu-footer header-fixed btn" data-toggle="modal"
+    <button id="booking_btn" onclick="return confirm('Are you sure?')" type="submit" class="menu-footer header-fixed btn" data-toggle="modal"
             data-target="#exampleModal">
         <div class="container">
             <div id="logo" class="">

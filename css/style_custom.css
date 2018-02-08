@@ -77,7 +77,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header #logo {
-    float: left;
+    /*float: left;*/
+    text-align: center;
 }
 
 #header #logo h1 {
@@ -467,6 +468,70 @@ body.mobile-nav-active #mobile-nav {
 body.mobile-nav-active #mobile-nav-toggle {
     color: #fff;
 }
+
+
+
+/* Mobile Nav Toggle */
+.menu-nav-toggle {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 999;
+    margin: 20px 20px 0 0;
+    border: 0;
+    background: none;
+    font-size: 24px;
+    display: none;
+    transition: all 0.4s;
+    outline: none;
+    cursor: pointer;
+}
+
+.menu-nav-toggle.pull-left {
+    /*position: fixed;*/
+    left: 0;
+    /*top: 0;*/
+    /*z-index: 999;*/
+    margin: 20px 0 0 20px ;
+    /*border: 0;*/
+    /*background: none;*/
+    /*font-size: 24px;*/
+    /*display: none;*/
+    /*transition: all 0.4s;*/
+    /*outline: none;*/
+    /*cursor: pointer;*/
+}
+
+.menu-nav-toggle i {
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .menu-nav-toggle {
+        display: inline;
+    }
+}
+
+.menu-nav-toggle.user{
+    right: 32px !important;
+    margin-top: 19px !important;
+}
+
+
+
+/* Basket Nav body classes */
+body.mobile-nav-active {
+    overflow: hidden;
+}
+
+body.mobile-nav-active #mobile-nav {
+    left: 0;
+}
+
+body.mobile-nav-active .menu-nav-toggle {
+    color: #fff;
+}
+
 
 /*--------------------------------------------------------------
 # Sections
@@ -1563,8 +1628,8 @@ tr:nth-child(odd) {
     border-color: #689c9c;
 }
 
-.choose-nail-item {
-
+.choose-nail-item.price-set-item {
+    background-color: #fff3d1;min-width: 157px;
 }
 
 /** ----------------- cart ----------------- */
@@ -1708,4 +1773,12 @@ tr:nth-child(odd) {
 }
 .btn.btn-default.choose-time-slot.disabled{
     background-color: #eee;
+}
+
+.menu-logout{
+    margin-top: 60px;
+    border-top: 1px solid #8686a9;
+    position: absolute !important;
+    bottom: 20px;
+    width: 100%;
 }

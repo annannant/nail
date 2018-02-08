@@ -23,41 +23,33 @@ if (empty($_SESSION['member'])) {
 $data            = [];
 $member_id       = $_SESSION['member']['id'];
 $status          = 'cart';
-$type            = $_POST['type'];
 $nail_group_id   = $_POST['nail_group_id'];
 $nail_group_name = $_POST['group_name'];
 
-if ($type == 'list') {
-    $data[] = [
-        'qty'            => $_POST['qty'],
-        'nail_list_name' => $_POST['name'],
-        'price'          => $_POST['price'],
-        'nail_list_id'   => $_POST['nail_list_id'],
-        'amount'         => $_POST['price'] * $_POST['qty'],
-        'type'           => 'list'
-    ];
+if ($_POST['type'] == 'group') {
+
+    $set = '';
+    $sql_set = "SELECT *  FROM `nail_lists` WHERE `nail_group_id` = 1";
+    $result_set     = $mysqli->query($sql_set);
+    while ($row = $result_set->fetch_assoc()){
+        $set .= $row['name'] . ', ';
+    }
+
+    $qty            = 1;
+    $nail_list_name = 'SET : ' . rtrim($set, ",") . '  10 nail';
+    $price          = $_POST['price_set'];
+    $nail_list_id   = 0;
+    $amount         = $_POST['price_set'];
+    $type           = 'group';
 
 } else {
-    $sql_list    = "SELECT * FROM nail_lists WHERE nail_group_id = $nail_group_id ";
-    $result_list = $mysqli->query($sql_list);
-    $count       = $mysqli->query($sql_list)->num_rows;
-
-    $price_set = $_POST['price_set'];
-    $price     = ($price_set / $count);
-
-    while ($row = $result_list->fetch_assoc()) {
-        if (!empty($row['qty_set'])) {
-            $row['qty']            = 1;
-            $row['nail_list_name'] = $row['name'];
-            $row['nail_list_id']   = $row['id'];
-            $row['type']           = 'group';
-            $row['price']          = $price;
-            $data[]                = $row;
-        }
-    }
+    $qty            = $_POST['qty'];
+    $nail_list_name = $_POST['name'];
+    $price          = $_POST['price'];
+    $nail_list_id   = $_POST['nail_list_id'];
+    $amount         = $_POST['price'] * $_POST['qty'];
+    $type           = 'list';
 }
-
-alert($data, 1);
 
 // =============== SELECT EXISTING CART ==================
 $sql_old    = "SELECT *  FROM `bookings` 
@@ -85,13 +77,16 @@ $_SESSION['booking_id'] = $booking_id;
 // }
 
 // =============== SELECT BOOKING ITEM CART ==================
-$sql_old_list    = "SELECT *  FROM `booking_lists` 
-WHERE `booking_id` = $booking_id AND `nail_list_id` = $nail_list_id ORDER BY id DESC LIMIT 0,1";
+$sql_old_list = "SELECT *  FROM `booking_lists` 
+WHERE `booking_id` = $booking_id 
+AND `nail_group_id` = $nail_group_id 
+AND `nail_list_id` = $nail_list_id 
+AND `type` = '$type' ORDER BY id DESC LIMIT 0,1";
 $result_old_list = $mysqli->query($sql_old_list)->fetch_assoc();
 
 if (empty($result_old_list)) {
-    $sql_booking_list    = "INSERT INTO `booking_lists` (`booking_id`, `nail_group_id`, `nail_list_id`, `nail_group_name`, `nail_list_name`, `price`, `qty`, `amount`) 
-VALUES ('$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$nail_list_name', '$price', '$qty', '$amount')";
+    $sql_booking_list    = "INSERT INTO `booking_lists` (`type`,`booking_id`, `nail_group_id`, `nail_list_id`, `nail_group_name`, `nail_list_name`, `price`, `qty`, `amount`) 
+VALUES ('$type','$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$nail_list_name', '$price', '$qty', '$amount')";
     $result_booking_list = $mysqli->query($sql_booking_list);
 } else {
     $qty                 = $qty + $result_old_list['qty'];
