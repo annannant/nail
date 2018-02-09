@@ -3,7 +3,8 @@ include 'mysql_connection.php';
 include 'check_login.php';
 $member_id = $_SESSION['member']['id'];
 
-$sql_h    = "SELECT *  FROM `bookings` WHERE `member_id` = $member_id AND  booking_status != 'cart'";
+$sql_h    = "SELECT *  FROM `bookings` 
+WHERE `member_id` = $member_id AND  booking_status != 'cart' order by create_date DESC";
 $result_h = $mysqli->query($sql_h);
 ?>
 <!DOCTYPE html>
@@ -49,28 +50,59 @@ $result_h = $mysqli->query($sql_h);
                     </div>
                 </div>
             </div>
-            <?php while ($row = $result_h->fetch_assoc()){
+            <?php while ($booking = $result_h->fetch_assoc()) {
 
+                $booking_id       = $booking['id'];
+                $sql_booking_list = "SELECT booking_lists.*, nail_types.name as nail_type_name , nail_lists.pic as pic,  
+ nail_groups.pic as nail_group_pic FROM `booking_lists` 
+                    LEFT JOIN nail_lists ON nail_lists.id = booking_lists.nail_list_id
+                    LEFT JOIN nail_types ON nail_types.id = nail_lists.nail_type_id
+                    LEFT JOIN nail_groups ON nail_groups.id = nail_lists.nail_group_id
+                    WHERE `booking_id` = $booking_id";
+                $booking_data     = $mysqli->query($sql_booking_list);
 
+                $image  = '';
+                $detail = '';
+                while ($bk_row = $booking_data->fetch_assoc()) {
+                    if ($bk_row['type'] == 'group') {
+                        $group_id   = $bk_row['nail_group_id'];
+                        $sql_group  = "SELECT *  FROM `nail_groups` WHERE `id` = $group_id";
+                        $data_group = $mysqli->query($sql_group)->fetch_assoc();
+
+                        $image  = $data_group['pic'];
+                        $detail .= ' ' . $bk_row['nail_list_name'];
+                    } else {
+                        $image  = $bk_row['pic'];
+                        $detail .= ' ' . $bk_row['nail_list_name'];
+                    }
+                }
                 ?>
-                <div class="row" style="background-color: #fff;padding: 15px;">
+                <div class="row booking-history" style="">
                     <div class="col-4">
-                        <img src="#">
+                        <img src="<?php echo $image ?>" width="100px">
                     </div>
                     <div class="col-8">
-                        <h4 style="text-align: left;">Orderx: 44444</h4>
-                        <div>
-                            <span>Order: 444444</span>
-                            dsadsadasdsadas asdas adas dasd
+                        <h4 class="booking-header">Order: <?php echo $booking['id'] ?></h4>
+                        <span class="booking-status"><?php echo ucwords($booking['booking_status']); ?></span>
+                        <div style="line-height: 13px;">
+                            <span>Order: <?php echo $booking['id'] ?></span>
+                            <span class="detail">
+                                <?php echo $detail; ?>
+                            </span>
                         </div>
-                        <div>sssss</div>
+                        <div style="margin-top: 20px;">฿<?php echo $booking['total_price']; ?></div>
+                        <div style="color: #818182;font-size: 15px;">
+                            <i class="far fa-calendar-alt"></i>
+                            <?php echo date('d/m/Y', strtotime($booking['booking_date'])) ?>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i class="far fa-clock"></i>
+                            <?php echo date('H:i', strtotime($booking['time_start'])) ?> -
+                            <?php echo date('H:i', strtotime($booking['time_end'])) ?>
+                        </div>
                     </div>
                 </div>
             <?php } ?>
         </div>
     </section><!-- #more-features -->
-
-
 </main>
 
 <button id="" type="button"
@@ -80,10 +112,10 @@ $result_h = $mysqli->query($sql_h);
             <div class="col-4" onclick="window.location.href='index.php';">
                 <i class="fas fa-home"></i>
             </div>
-            <div class="col-4" onclick="window.location.href='index.php';">
+            <div class="col-4" onclick="window.location.href='notification.php';">
                 <i class="far fa-bell"></i>
             </div>
-            <div class="col-4" onclick="window.location.href='index.php';">
+            <div class="col-4" onclick="window.location.href='history.php';">
                 <i class="fas fa-user"></i>
             </div>
         </div>

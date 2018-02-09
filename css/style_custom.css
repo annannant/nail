@@ -469,8 +469,6 @@ body.mobile-nav-active #mobile-nav-toggle {
     color: #fff;
 }
 
-
-
 /* Mobile Nav Toggle */
 .menu-nav-toggle {
     position: fixed;
@@ -492,7 +490,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     left: 0;
     /*top: 0;*/
     /*z-index: 999;*/
-    margin: 20px 0 0 20px ;
+    margin: 20px 0 0 20px;
     /*border: 0;*/
     /*background: none;*/
     /*font-size: 24px;*/
@@ -512,12 +510,10 @@ body.mobile-nav-active #mobile-nav-toggle {
     }
 }
 
-.menu-nav-toggle.user{
+.menu-nav-toggle.user {
     right: 32px !important;
     margin-top: 19px !important;
 }
-
-
 
 /* Basket Nav body classes */
 body.mobile-nav-active {
@@ -531,7 +527,6 @@ body.mobile-nav-active #mobile-nav {
 body.mobile-nav-active .menu-nav-toggle {
     color: #fff;
 }
-
 
 /*--------------------------------------------------------------
 # Sections
@@ -1629,7 +1624,8 @@ tr:nth-child(odd) {
 }
 
 .choose-nail-item.price-set-item {
-    background-color: #fff3d1;min-width: 157px;
+    background-color: #fff3d1;
+    min-width: 157px;
 }
 
 /** ----------------- cart ----------------- */
@@ -1647,7 +1643,8 @@ tr:nth-child(odd) {
     background-color: #fff;
     margin-top: 20px;
 }
-.cart .container .row{
+
+.cart .container .row {
     padding: 10px;
     border-bottom: 1px solid #ccc;
     min-height: 60px;
@@ -1656,31 +1653,33 @@ tr:nth-child(odd) {
 .cart .container .row.header {
     background-color: #dee2e6;
 }
-.cart .row-checkbox{
+
+.cart .row-checkbox {
     padding-left: 8px;
     /*display: inline-block;*/
     /*float: left;*/
     /*height: 50px;*/
 }
 
-.cart .row-detail{
+.cart .row-detail {
     /*display: inline-block;*/
     /*height: 60px;*/
 }
 
-.cart-total-price{
+.cart-total-price {
     text-align: left;
     padding-left: 15px;
     padding-top: 7px;
     font-size: 20px;
 }
 
-.cart-is-empty{
+.cart-is-empty {
     text-align: center;
     padding-top: 70px;
     min-height: 250px;
     vertical-align: middle;
 }
+
 /* The container */
 .container-label {
     display: block;
@@ -1747,8 +1746,10 @@ tr:nth-child(odd) {
     transform: rotate(45deg);
 }
 
-.text-open{
-    padding: 10px;text-align: center;color: #aaa;
+.text-open {
+    padding: 10px;
+    text-align: center;
+    color: #aaa;
 }
 
 .choose-time-slot.btn-default.active,
@@ -1765,17 +1766,19 @@ tr:nth-child(odd) {
     margin-bottom: 10px !important;
 }
 
-.datepicker-days tr:nth-child(even){
+.datepicker-days tr:nth-child(even) {
     background: #ffffff;
 }
-.datepicker-days tr:nth-child(even){
+
+.datepicker-days tr:nth-child(even) {
     background: #ffffff;
 }
-.btn.btn-default.choose-time-slot.disabled{
+
+.btn.btn-default.choose-time-slot.disabled {
     background-color: #eee;
 }
 
-.menu-logout{
+.menu-logout {
     margin-top: 60px;
     border-top: 1px solid #8686a9;
     position: absolute !important;
@@ -1783,20 +1786,43 @@ tr:nth-child(odd) {
     width: 100%;
 }
 
-
-.row-bill{
+.row-bill {
 
 }
-.cart .container .row.row-bill .row.row-bill-list{
+
+.cart .container .row.row-bill .row.row-bill-list {
     border-bottom: none;
     padding-bottom: 2px;
     min-height: 0px;
 }
 
-.cart .container .row.row-bill .row.row-bill-group img{
+.cart .container .row.row-bill .row.row-bill-group img {
     width: 65px;
 }
 
-.padding-none{
+.padding-none {
     padding: 0px !important;
+}
+
+#more-features .row.booking-history {
+    background-color: #fff;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+#more-features .row.booking-history .booking-header {
+    text-align: left;
+    height: 30px;
+    margin-bottom: 0px;
+}
+
+#more-features .row.booking-history .booking-status {
+    font-size: 11px;
+    color: orange;
+}
+
+#more-features .row.booking-history .detail {
+    font-size: 11px;
+    color: #818182;
+    line-height: 16px;
 }

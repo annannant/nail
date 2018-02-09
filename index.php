@@ -169,10 +169,10 @@ $result_nail = $mysqli->query($sql_nail);
             <div class="col-4" onclick="window.location.href='index.php';">
                 <i class="fas fa-home"></i>
             </div>
-            <div class="col-4" onclick="window.location.href='index.php';">
+            <div class="col-4" onclick="window.location.href='notification.php';">
                 <i class="far fa-bell"></i>
             </div>
-            <div class="col-4" onclick="window.location.href='index.php';">
+            <div class="col-4" onclick="window.location.href='history.php';">
                 <i class="far fa-user"></i>
             </div>
         </div>
