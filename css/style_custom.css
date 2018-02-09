@@ -1782,3 +1782,21 @@ tr:nth-child(odd) {
     bottom: 20px;
     width: 100%;
 }
+
+
+.row-bill{
+
+}
+.cart .container .row.row-bill .row.row-bill-list{
+    border-bottom: none;
+    padding-bottom: 2px;
+    min-height: 0px;
+}
+
+.cart .container .row.row-bill .row.row-bill-group img{
+    width: 65px;
+}
+
+.padding-none{
+    padding: 0px !important;
+}

@@ -5,20 +5,29 @@ include 'check_login.php';
 $member_id  = $_SESSION['member']['id'];
 $booking_id = $_GET['booking_id'];
 
-$sql_booking = "SELECT *  FROM `bookings` WHERE `id` = $booking_id";
-$booking_data     = $mysqli->query($sql_booking)->fetch_assoc();
+$sql_booking  = "SELECT *  FROM `bookings` WHERE `id` = $booking_id";
+$booking_data = $mysqli->query($sql_booking)->fetch_assoc();
 
-$sql_booking_list    = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $booking_id";
+$sql_booking_list    = "SELECT booking_lists.*, nail_types.name as nail_type_name , nail_lists.pic as pic  
+FROM `booking_lists` 
+LEFT JOIN nail_lists ON nail_lists.id = booking_lists.nail_list_id
+LEFT JOIN nail_types ON nail_types.id = nail_lists.nail_type_id
+WHERE `booking_id` = $booking_id";
 $result_booking_list = $mysqli->query($sql_booking_list);
 
-$booking_list = [];
+$booking_type_list  = [];
+$booking_type_group = [];
+
 if (!empty($result_booking_list)) {
     while ($row_list = $result_booking_list->fetch_assoc()) {
-        $booking_list[] = $row_list;
+        $group_id = $row_list['nail_group_id'];
+        if ($row_list['type'] == 'group') {
+            $booking_type_group[$group_id][] = $row_list;
+        } else {
+            $booking_type_list[$group_id][] = $row_list;
+        }
     }
 }
-
-$total_price = 0;
 
 ?>
 <!DOCTYPE html>
@@ -71,8 +80,6 @@ $total_price = 0;
       More Features Section
     ============================-->
     <section id="" class="cart" style="margin-top: 11px; padding-bottom: 50px;">
-
-
         <div class="container container-cart">
             <div class="row header" style="line-height: 35px;font-size: 18px;border-bottom: 1px solid #aaa;">
                 <div class="col-6">
@@ -84,158 +91,120 @@ $total_price = 0;
                 <div class="col-6">
                     <div>Booking ID</div>
                 </div>
-                <div class="col-6" >
+                <div class="col-6">
                     <div><?php echo $booking_data['id']; ?></div>
                 </div>
-                <div class="col-6"  style="font-size: 16px;">
+                <div class="col-6" style="font-size: 16px;">
                     <div>DATE : <?php echo date('d/m/Y', strtotime($booking_data['booking_date'])); ?></div>
                 </div>
-                <div class="col-6"  style="font-size: 16px;">
-                    <div>TIME :  <?php echo date('H:i', strtotime($booking_data['time_start'])); ?> -  <?php echo date('H:i', strtotime($booking_data['time_end'])); ?></div>
+                <div class="col-6" style="font-size: 16px;">
+                    <div>TIME : <?php echo date('H:i', strtotime($booking_data['time_start'])); ?>
+                        - <?php echo date('H:i', strtotime($booking_data['time_end'])); ?></div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-4">ddd</div>
-                        <div class="col-64">xxx</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php foreach ($cart_list as $group => $list) { ?>
+            <div class="row row-bill">
+                <?php foreach ($booking_type_group as $group_id => $bk_groups) {
+                    $sql_group  = "SELECT *  FROM `nail_groups` WHERE `id` = $group_id";
+                    $data_group = $mysqli->query($sql_group)->fetch_assoc();
 
-            <div class="container container-cart">
-                <div class="row header">
-                    <div class="col-2 row-checkbox" style="    margin-top: -10px;">
-                        <label class="container-label">
-                            <input type="checkbox"
-                                   id="main_group_<?php echo $list[0]['nail_group_id'] ?>"
-                                   data-group="<?php echo $list[0]['nail_group_id'] ?>"
-                                   class="chk_main group_<?php echo $list[0]['nail_group_id'] ?>"
-                                   checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                    <div class="col-8 row-detail">
-                        <label style="font-size: 16px;"><?php echo $list[0]['nail_group_name'] ?></label>
-                        <div class="input-group" style="width: 120px;">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div><a href="detail.php?id=<?php echo $list[0]['nail_group_id'] ?>"
-                                class="sf-with-ul" title="Edit"><i class="fas fa-edit"></i></a></div>
-                    </div>
-                </div>
+                    $sql_nail_list    = "SELECT nail_lists.*,  nail_types.name as nail_type_name FROM `nail_lists` 
+                    LEFT JOIN nail_types ON nail_types.id = nail_lists.nail_type_id WHERE `nail_group_id` = $group_id";
+                    $result_nail_list = $mysqli->query($sql_nail_list);
 
-                <?php foreach ($list as $item) { ?>
-                    <div class="row">
-                        <div class="col-2 row-checkbox">
-                            <label class="container-label">
-                                <input type="checkbox" checked="checked"
-                                       data-id="<?php echo $item['id'] ?>"
-                                       data-type="<?php echo $item['type'] ?>"
-                                       data-group="<?php echo $item['nail_group_id'] ?>"
-                                       class="chk chk_list item_group_<?php echo $item['nail_group_id'] ?>
-                                       item_<?php echo $item['id'] ?>">
-
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                        <div class="col-8 row-detail">
-                            <div style="margin-bottom: 10px;">
-                                #<?php echo $item['nail_list_name'] ?>
+                    ?>
+                    <div class="col-12" style="border-bottom: 1px solid #ccc;">
+                        <div class="row row-bill-group" style="border-bottom: none;">
+                            <div class="col-3 padding-none">
+                                <img src="<?php echo $data_group['pic'] ?>">
                             </div>
-                            <?php
-                            $display_none = '';
-                            if ($item['type'] == 'group') {
-                                $display_none = 'display:none;';
-                            }
-                            ?>
-                            <div class="input-group" style="width: 120px;<?php echo $display_none ?>">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-number btn-qty"
-                                            data-type="minus"
-                                            data-id="<?php echo $item['id'] ?>"
-                                            data-field="quant[<?php echo $item['id'] ?>]">
-                                        <span class="glyphicon glyphicon-minus"></span>
-                                    </button>
-                                </div>
-                                <input type="text" id="quantity_<?php echo $item['id'] ?>"
-                                       data-id="<?php echo $item['id'] ?>"
-                                       data-price="<?php echo $item['price'] ?>"
-                                       name="quant[<?php echo $item['id'] ?>]"
-                                       class="form-control input-number input-qty"
-                                       value="<?php echo $item['qty'] ?>" min="0" max="10">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-number btn-qty" data-type="plus"
-                                            data-id="<?php echo $item['id'] ?>"
-                                            data-field="quant[<?php echo $item['id'] ?>]">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
-                                </div>
+                            <div class="col-9 padding-none">
+                                <div style="font-size: 14px;font-weight: bold;">
+                                    #<?php echo $data_group['id'] ?> <?php echo $data_group['name'] ?></div>
+                                <br>
                             </div>
                         </div>
-                        <div class="col-2">
-                            <div id="price<?php echo $item['id'] ?>" data-val="<?php echo $item['price'] ?>">
-                                ฿<?php echo $item['price'] ?>
+                        <div class="row row-bill-list">
+                            <div class="col-9">
+                                <ul style="font-size: 14px; padding-left: 0px;">
+                                    <?php while ($nail_list = $result_nail_list->fetch_assoc()) { ?>
+                                        <li><?php echo $nail_list['name'] ?>
+                                            :<?php echo $nail_list['nail_type_name'] ?></li>
+                                    <?php } ?>
+                                </ul>
                             </div>
-                            <?php
-                            $total_price += $item['amount'];
-                            ?>
-
-                            <?php if ($item['type'] == 'group') { ?>
-                                <div class="col-12" style="text-align: left;text-align: left;margin-top: 20px;">
-                                    <div style="">
-                                        <a href="cart-delete.php?id=<?php echo $item['id'] ?>"
-                                           onclick="return confirm('Are you sure?')"
-                                           class="sf-with-ul" title="Edit"><i class="fas fa-trash-alt"></i></a>
-                                    </div>
-                                </div>
-                            <?php } ?>
+                            <div class="col-3" style="text-align: right;">
+                                <div>฿<?php echo $data_group['price_set'] ?></div>
+                                <div style="font-size: 11px;">(price set)</div>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>
+
+                <?php foreach ($booking_type_list as $group_id => $bk_lists) {
+                    $sql_group  = "SELECT *  FROM `nail_groups` WHERE `id` = $group_id";
+                    $data_group = $mysqli->query($sql_group)->fetch_assoc();
+
+                    ?>
+                    <div class="col-12">
+                        <?php foreach ($bk_lists as $bk_list) { ?>
+                            <div class="row row-bill-group" style="border-bottom: none;">
+                                <div class="col-3 padding-none">
+                                    <img src="<?php echo $bk_list['pic'] ?>">
+                                </div>
+                                <div class="col-7 padding-none">
+                                    <div style="font-size: 14px;font-weight: bold;">
+                                        #<?php echo $bk_list['id'] ?> <?php echo $data_group['name'] ?></div>
+                                    <div><?php echo $bk_list['nail_list_name'] ?>
+                                        :<?php echo $bk_list['nail_type_name'] ?> <span
+                                                style="color: #1b6d85;"> x <?php echo $bk_list['qty'] ?> </span></div>
+                                </div>
+                                <div class="col-2" style="text-align: right;">
+                                    <div>฿<?php echo $bk_list['amount'] ?></div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
             </div>
-        <?php } ?>
-
-    </section><!-- #more-features -->
-
-
-</main>
-
-
-<!--==========================
-  Footer
-============================-->
-<?php if (!empty($cart_list)) { ?>
-    <div id="next_to_order" class="menu-footer header-fixed btn" data-toggle="modal" style="height: 120px"
-         data-target="#exampleModal">
-        <div class="container">
-            <div class="row">
-                <div class="col-8">
-                    <div class="col-2 row-checkbox" style="    margin-top: -10px;">
-                        <label class="container-label">
-                            <div style="padding-left: 10px;color: #eeeeee">Select All</div>
-                            <input type="checkbox" checked="checked"
-                                   class="chk_all">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                    <div class="cart-total-price" style="color: #eeeeee">
-                        <div>Total Price: ฿<span id="total_price"><?php echo number_format($total_price, '0', '',
-                                    ','); ?></span></div>
-                    </div>
+            <div class="row row-bill-total">
+                <div class="col-7 padding-none">
+                    <h4>Total Price</h4>
                 </div>
-                <div class="col-4">
-                    <button type="button" id="next_to_order_btn" class="btn btn-lg" style="    color: #777;">Next <i
-                                class="fas fa-chevron-right"></i></button>
+                <div class="col-5" style="text-align: right; ">
+                    <h4>฿<?php echo $booking_data['total_price'] ?></h4>
+                </div>
+            </div>
+            <div class="row" style="">
+                <div style="padding-top: 10px;color: darkred;font-size: 16px;">*** Please more late 15 minute. ***</div>
+            </div>
+        </div>
+
+        <div class="container container-cart"  style="border: none;">
+            <div class="row" style="border: none;">
+                <div class="col-6" style="text-align: right;">
+                    <button type="button" class="btn btn-default" style="width: 140px;height: 45px;">
+                        <i class="far fa-credit-card" style="padding-right: 6px;"></i>  Payment</button>
+                </div>
+                <div class="col-6" style="text-align: left;">
+                    <button type="button" class="btn btn-default" style="width: 140px;height: 45px;">
+                        <i class="far fa-edit" style="padding-right: 6px;"></i>  Edit</button>
                 </div>
             </div>
         </div>
+    </section><!-- #more-features -->
+</main>
+<button id="" type="button" onclick="window.location.href='index.php';"
+        class="menu-footer header-fixed btn" data-toggle="modal">
+    <div class="container">
+        <div id="logo" class="">
+            <h1>
+                <i class="fas fa-chevron-left"></i>
+                Home
+                <i class="fas fa-home"></i>
+            </h1>
+        </div>
     </div>
-<?php } ?>
-
+</button>
 <input type="hidden" id="alreadyLogin" value="<?php echo (!empty($_SESSION['member'])) ? 'true' : 'false' ?>">
 <script>
     // ---------------- Price ----------------
