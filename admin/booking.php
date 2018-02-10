@@ -18,6 +18,13 @@ $page = 'booking'; // for menu
 
     <?php include 'header.php'; ?>
 
+    <script src="../carousel/jquery/jquery.min.js"></script>
+    <script src="../carousel/jquery/bootstrap.min.js"></script>
+    <script src="../carousel/jquery/jquery.touchSwipe.min.js"></script>
+    <script src="../carousel/jquery/prefixfree.min.js"></script>
+    <link href="../lib/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet">
+    <script src="../lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
 </head>
 <body>
 
@@ -36,7 +43,7 @@ $page = 'booking'; // for menu
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Users</a>
+                    <a class="navbar-brand" href="#">Booking</a>
                 </div>
                 <div class="collapse navbar-collapse">
                 </div>
@@ -45,6 +52,42 @@ $page = 'booking'; // for menu
 
         <div class="content">
             <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <input type="text" id="date" name="date" value=""
+                                                       class="form-control border-input" style="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Search</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    var date = new Date();
+                    date.setDate(date.getDate());
+                    $('#date').datepicker({
+                        "format": 'dd-mm-yyyy',
+                        "setDate": new Date(),
+                        "startDate": date,
+                        "autoclose": true
+                    });
+                </script>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -148,6 +191,5 @@ $page = 'booking'; // for menu
 
 <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 <script src="assets/js/demo.js"></script>
-
 
 </html>

@@ -1869,19 +1869,19 @@ textarea.form-control {
 }
 
 .dropdown-menu {
-    background-color: #FFFCF5;
-    border: 0 none;
-    border-radius: 6px;
-    display: block;
-    margin-top: 10px;
-    padding: 0px;
-    position: absolute;
-    visibility: hidden;
-    z-index: 9000;
-    opacity: 0;
-    filter: alpha(opacity=0);
-    -webkit-box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1);
-    box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1);
+    /*background-color: #FFFCF5;*/
+    /*border: 0 none;*/
+    /*border-radius: 6px;*/
+    /*display: block;*/
+    /*margin-top: 10px;*/
+    /*padding: 0px;*/
+    /*position: absolute;*/
+    /*visibility: hidden;*/
+    /*z-index: 9000;*/
+    /*opacity: 0;*/
+    /*filter: alpha(opacity=0);*/
+    /*-webkit-box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1);*/
+    /*box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1);*/
 }
 
 .open .dropdown-menu {
@@ -3825,4 +3825,16 @@ textarea.form-control {
 
 .card.card-queue:hover h4.title {
     /*color: #fff;*/
+}
+
+.date-booking-search{
+    text-align: right;
+    width: 63px;
+    vertical-align: middle;
+    padding-top: 10px !important;
+    padding-right: 13px !important;
+    color: #aaa;
+}
+.date-booking-search i{
+    font-size: 30px;
 }
