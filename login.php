@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 include 'mysql_connection.php';
 
 if (!empty($_SESSION['member'])) {

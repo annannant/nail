@@ -1,3 +1,8 @@
+<?php
+
+include '../mysql_connection.php';
+
+?>
 <!doctype html>
 <html lang="en">
 <head>

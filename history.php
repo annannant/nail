@@ -4,7 +4,7 @@ include 'check_login.php';
 $member_id = $_SESSION['member']['id'];
 
 $sql_h    = "SELECT *  FROM `bookings` 
-WHERE `member_id` = $member_id AND  booking_status != 'cart' order by create_date DESC";
+WHERE `member_id` = $member_id AND  booking_status != 'cart' ";
 $result_h = $mysqli->query($sql_h);
 ?>
 <!DOCTYPE html>

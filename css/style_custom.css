@@ -1661,9 +1661,31 @@ tr:nth-child(odd) {
     /*height: 50px;*/
 }
 
+.cart .row-edit {
+    padding-left: 18px;
+    padding-top: 10px;
+}
+
+.cart .row-edit a {
+    color: red;
+    font-size: 20px;
+    /*padding-left: 2px;*/
+}
+
 .cart .row-detail {
     /*display: inline-block;*/
     /*height: 60px;*/
+    padding-top: 12px;
+}
+
+.cart .container .row.row-item-detail {
+    padding: 0px;
+    border-bottom: none;
+}
+
+.cart .container .row.row-item-detail .detail-img{
+    padding-right: 0px;
+    /*border-bottom: none;*/
 }
 
 .cart-total-price {

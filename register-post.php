@@ -1,6 +1,5 @@
 <?php
 include 'mysql_connection.php';
-session_start();
 
 $name      = $_POST['name'];
 $last_name = $_POST['last_name'];

@@ -2,6 +2,11 @@
 include 'mysql_connection.php';
 include 'check_login.php';
 
+$mode = 'view';
+if (!empty($_GET['mode'])) {
+    $mode = $_GET['mode'];
+}
+
 $member_id = $_SESSION['member']['id'];
 
 $sql_cart = "SELECT *  FROM `bookings` WHERE `member_id` = $member_id AND `booking_status` = 'cart' ORDER BY id DESC LIMIT 0,1 ";
@@ -49,7 +54,8 @@ $total_price = 0;
             <div id="logo" class="">
                 <h1><a href="#" class="scrollto">Cart</a></h1>
             </div>
-            <a href="javascript:history.go(-1)" class="menu-nav-toggle pull-left"><i class="fas fa-chevron-left"></i></a>
+            <a href="index.php" class="menu-nav-toggle pull-left"><i
+                        class="fas fa-chevron-left"></i></a>
             <?php include_once 'include_nav.php'; ?>
         </div>
 </header>
@@ -110,50 +116,89 @@ $total_price = 0;
 
             <div class="container container-cart">
                 <div class="row header">
-                    <div class="col-2 row-checkbox" style="    margin-top: -10px;">
-                        <label class="container-label">
-                            <input type="checkbox"
-                                   id="main_group_<?php echo $list[0]['nail_group_id'] ?>"
-                                   data-group="<?php echo $list[0]['nail_group_id'] ?>"
-                                   class="chk_main group_<?php echo $list[0]['nail_group_id'] ?>"
-                                   checked="checked">
-                            <span class="checkmark"></span>
+                    <?php if ($mode == 'edit') { ?>
+                        <div class="col-2 row-checkbox" style="    margin-top: -10px;">
+                            <label class="container-label"></label>
+                        </div>
+                    <?php } else { ?>
+                        <div class="col-2 row-checkbox" style="    margin-top: -10px;">
+                            <label class="container-label">
+                                <input type="checkbox"
+                                       id="main_group_<?php echo $list[0]['nail_group_id'] ?>"
+                                       data-group="<?php echo $list[0]['nail_group_id'] ?>"
+                                       class="chk_main group_<?php echo $list[0]['nail_group_id'] ?>"
+                                       checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    <?php } ?>
+
+                    <div class="col-8">
+                        <label style="font-size: 16px;">
+                            <a href="detail.php?id=<?php echo $list[0]['nail_group_id'] ?>"
+                               class="sf-with-ul" title="Edit">
+                                <?php echo $list[0]['nail_group_name'] ?>
+                            </a>
                         </label>
-                    </div>
-                    <div class="col-8 row-detail">
-                        <label style="font-size: 16px;"><?php echo $list[0]['nail_group_name'] ?></label>
                         <div class="input-group" style="width: 120px;">
                         </div>
                     </div>
+
                     <div class="col-2">
-                        <div><a href="detail.php?id=<?php echo $list[0]['nail_group_id'] ?>"
-                                class="sf-with-ul" title="Edit"><i class="fas fa-edit"></i></a></div>
+                        <?php if ($mode == 'edit') { ?>
+                            <div>
+                                <a href="cart.php?mode=preview" class="sf-with-ul" title="Edit">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                            </div>
+                        <?php } else { ?>
+                            <div>
+                                <a href="cart.php?mode=edit" class="sf-with-ul" title="Edit"><i class="fas fa-edit"></i></a>
+                            </div>
+                        <?php } ?>
                     </div>
+
                 </div>
 
                 <?php foreach ($list as $item) { ?>
                     <div class="row">
-                        <div class="col-2 row-checkbox">
-                            <label class="container-label">
-                                <input type="checkbox" checked="checked"
-                                       data-id="<?php echo $item['id'] ?>"
-                                       data-type="<?php echo $item['type'] ?>"
-                                       data-group="<?php echo $item['nail_group_id'] ?>"
-                                       class="chk chk_list item_group_<?php echo $item['nail_group_id'] ?>
+                        <?php if ($mode == 'edit') { ?>
+                            <div class="col-2 row-edit">
+                                <a href="cart-delete.php?id=<?php echo $item['id'] ?>"
+                                   onclick="return confirm('Are you sure?')"
+                                   class="sf-with-ul" title="Edit"><i class="fas fa-minus-circle"></i></a>
+                            </div>
+                        <?php } else { ?>
+                            <div class="col-2 row-checkbox">
+                                <label class="container-label">
+                                    <input type="checkbox" checked="checked"
+                                           data-id="<?php echo $item['id'] ?>"
+                                           data-type="<?php echo $item['type'] ?>"
+                                           data-group="<?php echo $item['nail_group_id'] ?>"
+                                           class="chk chk_list item_group_<?php echo $item['nail_group_id'] ?>
                                        item_<?php echo $item['id'] ?>">
 
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        <?php } ?>
+
                         <div class="col-8 row-detail">
-                            <div style="margin-bottom: 10px;">
-                                #<?php echo $item['nail_list_name'] ?>
+                            <div class="row row-item-detail">
+                                <div class="col-3 detail-img">
+                                    <img src="<?php echo $item['pic'] ?>" style="width: 50px" class="ion-ios-albums-outline">
+                                </div>
+                                <div class="col-9">
+                                    #<?php echo $item['nail_list_name'] ?>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 10px;margin-bottom: 10px;">
                             </div>
                             <?php
-                                $display_none = '';
-                                if($item['type'] == 'group'){
-                                    $display_none = 'display:none;';
-                                }
+                            $display_none = '';
+                            if ($item['type'] == 'group') {
+                                $display_none = 'display:none;';
+                            }
                             ?>
                             <div class="input-group" style="width: 120px;<?php echo $display_none ?>">
                                 <div class="input-group-btn">
@@ -171,7 +216,8 @@ $total_price = 0;
                                        class="form-control input-number input-qty"
                                        value="<?php echo $item['qty'] ?>" min="0" max="10">
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-number btn-qty" data-type="plus"
+                                    <button type="button" class="btn btn-default btn-number btn-qty"
+                                            data-type="plus"
                                             data-id="<?php echo $item['id'] ?>"
                                             data-field="quant[<?php echo $item['id'] ?>]">
                                         <span class="glyphicon glyphicon-plus"></span>
@@ -186,15 +232,6 @@ $total_price = 0;
                             <?php
                             $total_price += $item['amount'];
                             ?>
-
-                            <?php if($item['type'] == 'group'){ ?>
-                                <div class="col-12" style="text-align: left;text-align: left;margin-top: 20px;">
-                                    <div style="">
-                                        <a href="cart-delete.php?id=<?php echo $item['id'] ?>" onclick="return confirm('Are you sure?')"
-                                           class="sf-with-ul" title="Edit"><i class="fas fa-trash-alt"></i></a>
-                                    </div>
-                                </div>
-                            <?php }?>
                         </div>
                     </div>
                 <?php } ?>
@@ -216,22 +253,27 @@ $total_price = 0;
         <div class="container">
             <div class="row">
                 <div class="col-8">
-                    <div class="col-2 row-checkbox" style="    margin-top: -10px;">
-                        <label class="container-label">
-                            <div style="padding-left: 10px;color: #eeeeee">Select All</div>
-                            <input type="checkbox" checked="checked"
-                                   class="chk_all">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
+                    <?php if ($mode != 'edit') { ?>
+                        <div class="col-2 row-checkbox" style="    margin-top: -10px;">
+                            <label class="container-label">
+                                <div style="padding-left: 10px;color: #eeeeee">Select All</div>
+                                <input type="checkbox" checked="checked"
+                                       class="chk_all">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    <?php } ?>
+
                     <div class="cart-total-price" style="color: #eeeeee">
                         <div>Total Price: ฿<span id="total_price"><?php echo number_format($total_price, '0', '',
                                     ','); ?></span></div>
                     </div>
                 </div>
                 <div class="col-4">
-                    <button type="button" id="next_to_order_btn" class="btn btn-lg" style="    color: #777;">Next <i
-                                class="fas fa-chevron-right"></i></button>
+                    <?php if ($mode != 'edit') { ?>
+                        <button type="button" id="next_to_order_btn" class="btn btn-lg" style="    color: #777;">Next <i
+                                    class="fas fa-chevron-right"></i></button>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -243,9 +285,9 @@ $total_price = 0;
     // ---------------- Price ----------------
     $('.input-qty').on('change', function () {
 
-        if($(this).val() == 0){
-            if(confirm("Do you want to delete this item ?")){
-                window.location.href="cart-delete.php?id="+ $(this).attr('data-id') +"";
+        if ($(this).val() == 0) {
+            if (confirm("Do you want to delete this item ?")) {
+                window.location.href = "cart-delete.php?id=" + $(this).attr('data-id') + "";
                 return
             }
         }
@@ -318,8 +360,8 @@ $total_price = 0;
         // check 10
         var list_qty = 0;
         $('.chk_list[data-type="list"]:checked').each(function () {
-            var qty = '#quantity_'+ $(this).attr('data-id');
-            qty = parseInt($(qty).val());
+            var qty = '#quantity_' + $(this).attr('data-id');
+            qty     = parseInt($(qty).val());
             list_qty += qty;
         });
 
@@ -328,7 +370,7 @@ $total_price = 0;
             group_qty += 10;
         });
 
-        if((list_qty + group_qty) != 10){
+        if ((list_qty + group_qty) != 10) {
             alert("Please choose total nail equal 10 item");
             return;
         }

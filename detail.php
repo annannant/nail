@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'mysql_connection.php';
 
 // -------------------- GET NAIL ID --------------- //
@@ -49,7 +48,8 @@ while ($row = $result_list->fetch_assoc()) {
             <h1><a href="#" class="scrollto" style="font-size: 18px;"><?php echo $data_group['name'] ?></a></h1>
         </div>
         <a href="cart.php" class="menu-nav-toggle"><i class="fas fa-shopping-basket"></i></a>
-
+        <a href="index.php" class="menu-nav-toggle pull-left"><i
+                    class="fas fa-chevron-left"></i></a>
         <?php include_once 'include_nav.php'; ?>
     </div>
 </header>
@@ -217,6 +217,7 @@ while ($row = $result_list->fetch_assoc()) {
                         <label class="btn btn-default  option choose-nail-item"
                                data-id="<?php echo $list['id'] ?>"
                                data-price="<?php echo $list['price'] ?>"
+                               data-pic="<?php echo $list['pic'] ?>"
                                data-name="<?php echo $list['name'] ?>"
                                data-group-name="<?php echo $data_group['name'] ?>"
                                data-group-id="<?php echo $list['nail_group_id'] ?>"
@@ -230,6 +231,7 @@ while ($row = $result_list->fetch_assoc()) {
                     <label class="btn btn-default  option choose-nail-item price-set-item" style="font-size: 12px;"
                            data-group-name="<?php echo $data_group['name'] ?>"
                            data-group-id="<?php echo $list['nail_group_id'] ?>"
+                           data-pic="<?php echo $data_group['pic'] ?>"
                            data-price-set="<?php echo $data_group['price_set']; ?>"
                            data-type="group">
                         <input type="radio" name="group" id="<?php echo $list['id'] ?>"
@@ -293,6 +295,7 @@ while ($row = $result_list->fetch_assoc()) {
             "qty": $('#quantity').val(),
             "type": $('.choose-nail-item.active').attr('data-type'),
             "price": $('.choose-nail-item.active').attr('data-price'),
+            "pic": $('.choose-nail-item.active').attr('data-pic'),
             "name": $('.choose-nail-item.active').attr('data-name'),
             "group_name": $('.choose-nail-item.active').attr('data-group-name'),
             "nail_list_id": $('.choose-nail-item.active').attr('data-id'),
@@ -305,20 +308,20 @@ while ($row = $result_list->fetch_assoc()) {
             return;
         }
 
-        $.post("detail-post.php", data, function (data) {
-            if (data.error !== undefined) {
-                if (data.error == 'nologin') {
+        $.post("detail-post.php", data, function (resp) {
+            if (resp.error !== undefined) {
+                if (resp.error == 'nologin') {
                     window.location.href = 'login.php';
                     return
                 } else {
-                    alert(data.error);
+                    alert(resp.error);
                     return;
                 }
-
             } else {
                 window.location.href = 'cart.php';
             }
-        }, "json");
+        }, "json").success(function () {
+        });
 
     });
 </script>

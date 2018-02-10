@@ -1,10 +1,6 @@
 <?php
 include 'mysql_connection.php';
-session_start();
 
-// echo "<pre>";
-// print_r($_POST);
-// die;
 // [qty] => 4
 // [price] => 20
 // [name] => Chin-jang 03-4 (finger)
@@ -28,15 +24,16 @@ $nail_group_name = $_POST['group_name'];
 
 if ($_POST['type'] == 'group') {
 
-    $set = '';
-    $sql_set = "SELECT *  FROM `nail_lists` WHERE `nail_group_id` = 1";
-    $result_set     = $mysqli->query($sql_set);
-    while ($row = $result_set->fetch_assoc()){
+    $set        = '';
+    $sql_set    = "SELECT *  FROM `nail_lists` WHERE `nail_group_id` = 1";
+    $result_set = $mysqli->query($sql_set);
+    while ($row = $result_set->fetch_assoc()) {
         $set .= $row['name'] . ', ';
     }
 
     $qty            = 1;
     $nail_list_name = 'SET : ' . rtrim($set, ",") . '  10 nail';
+    $pic            = $_POST['pic'];
     $price          = $_POST['price_set'];
     $nail_list_id   = 0;
     $amount         = $_POST['price_set'];
@@ -45,6 +42,7 @@ if ($_POST['type'] == 'group') {
 } else {
     $qty            = $_POST['qty'];
     $nail_list_name = $_POST['name'];
+    $pic            = $_POST['pic'];
     $price          = $_POST['price'];
     $nail_list_id   = $_POST['nail_list_id'];
     $amount         = $_POST['price'] * $_POST['qty'];
@@ -77,7 +75,7 @@ $_SESSION['booking_id'] = $booking_id;
 // }
 
 // =============== SELECT BOOKING ITEM CART ==================
-$sql_old_list = "SELECT *  FROM `booking_lists` 
+$sql_old_list    = "SELECT *  FROM `booking_lists` 
 WHERE `booking_id` = $booking_id 
 AND `nail_group_id` = $nail_group_id 
 AND `nail_list_id` = $nail_list_id 
@@ -85,8 +83,8 @@ AND `type` = '$type' ORDER BY id DESC LIMIT 0,1";
 $result_old_list = $mysqli->query($sql_old_list)->fetch_assoc();
 
 if (empty($result_old_list)) {
-    $sql_booking_list    = "INSERT INTO `booking_lists` (`type`,`booking_id`, `nail_group_id`, `nail_list_id`, `nail_group_name`, `nail_list_name`, `price`, `qty`, `amount`) 
-VALUES ('$type','$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$nail_list_name', '$price', '$qty', '$amount')";
+    $sql_booking_list    = "INSERT INTO `booking_lists` (`type`,`booking_id`, `nail_group_id`, `nail_list_id`, `nail_group_name`, `nail_list_name`, `pic`, `price`, `qty`, `amount`) 
+VALUES ('$type','$booking_id', '$nail_group_id', '$nail_list_id', '$nail_group_name', '$nail_list_name', '$pic', '$price', '$qty', '$amount')";
     $result_booking_list = $mysqli->query($sql_booking_list);
 } else {
     $qty                 = $qty + $result_old_list['qty'];
@@ -96,4 +94,6 @@ WHERE `booking_id` = $booking_id AND `nail_group_id` = $nail_group_id AND `nail_
     $result_booking_list = $mysqli->query($sql_booking_list);
 }
 
-echo $booking_id;
+//echo $booking_id
+echo json_encode(['data' => $booking_id]);
+die;

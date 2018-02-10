@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'mysql_connection.php';
 
 // -------------------- GET NAIL --------------- //

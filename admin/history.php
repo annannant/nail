@@ -1,5 +1,6 @@
 <?php
 
+include '../mysql_connection.php';
 $page = 'history'; // for menu
 
 ?>
