@@ -2,7 +2,7 @@
 
 include '../mysql_connection.php';
 
-$page = 'nail-group'; // for menu
+$page = 'nail-group'; // ชีเเถบเมนูfor menu
 
 // -------------------- GET NAIL --------------- //
 $sql_nail   = "SELECT * FROM `nail_groups` ORDER BY `nail_groups`.`id` DESC";
@@ -18,7 +18,7 @@ $result_group = $mysqli->query($sql_nail);
     <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>Paper Dashboard by Creative Tim</title>
+    <title>Admin</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>

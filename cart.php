@@ -9,7 +9,7 @@ if (!empty($_GET['mode'])) {
 
 $member_id = $_SESSION['member']['id'];
 
-$sql_cart = "SELECT *  FROM `bookings` WHERE `member_id` = $member_id AND `booking_status` = 'cart' ORDER BY id DESC LIMIT 0,1 ";
+$sql_cart = "SELECT * FROM `bookings` WHERE `member_id` = $member_id AND `booking_status` = 'cart' ORDER BY id DESC LIMIT 0,1 ";
 $cart     = $mysqli->query($sql_cart)->fetch_assoc();
 
 $cart_id          = $cart['id'];

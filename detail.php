@@ -134,7 +134,7 @@ while ($row = $result_list->fetch_assoc()) {
                     } ?>
                 </div>
 
-                <!-- Controls -->
+                <!-- Controls ซ้ายขวารุป-->
                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                     <span class="sr-only">Previous</span>
                 </a>
@@ -427,6 +427,8 @@ while ($row = $result_list->fetch_assoc()) {
             e.preventDefault();
         }
     });
+    // ----------- End QTY -----------
+
 </script>
 
 </body>

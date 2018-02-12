@@ -1,7 +1,7 @@
 <?php
 
 include '../mysql_connection.php';
-
+include "check_login_admin.php";
 ?>
 <!doctype html>
 <html lang="en">

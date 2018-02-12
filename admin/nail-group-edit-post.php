@@ -33,7 +33,7 @@ if ($mysqli->query($sql) === true) {
 	die;
 } else {
     echo "<script>alert('เพิ่มข้อมูลไม่สำเร็จ');</script>";
-    echo "<script>window.location='nail-group-edit.php'</script>"; // พาไปหน้า creat
+    echo "<script>window.location='nail-group-edit.php'</script>"; // พาไปหน้า create
 	die;
 }
 

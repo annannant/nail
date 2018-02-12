@@ -2,14 +2,11 @@
 
 include '../mysql_connection.php';
 
-$page = 'nail-group'; // for menu
+$page = 'nails'; // for menu
 
 // -------------------- GET NAIL --------------- //
-$nail_group_id = $_GET['nail_group_id'];
-$sql_nail   = "SELECT * FROM `nail_lists` WHERE `nail_group_id`  = $nail_group_id ORDER BY `nail_lists`.`id` DESC";
-$result_list = $mysqli->query($sql_nail);
-
-
+$sql_nail    = "SELECT * FROM nail_groups ORDER BY id DESC";
+$result_nail = $mysqli->query($sql_nail);
 
 ?>
 
@@ -21,7 +18,7 @@ $result_list = $mysqli->query($sql_nail);
     <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>Admin</title>
+    <title>Paper Dashboard by Creative Tim</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
@@ -47,9 +44,9 @@ $result_list = $mysqli->query($sql_nail);
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Nail List #<?php echo $nail_group_id?></a>
+                    <a class="navbar-brand" href="#">Nail</a>
                 </div>
-                <!-- <div class="collapse navbar-collapse">
+               <!--  <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -66,63 +63,46 @@ $result_list = $mysqli->query($sql_nail);
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Set Nail</h4>
+                            </div>
+                            <div class="content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select class="form-control border-input">
+                                                    <option>Set Nail..</option>
+                                                    <option>AAAA</option>
+                                                    <option>BBBB</option>
+                                                    <option>CCCC</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <div class="text-right">
+                                                    <a href="nail-create.php" class="btn btn-info btn-fill btn-wd">
+                                                        <i class="ti-plus"></i>
+                                                        Add Nail
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
 
-
-                        <?php  while ($row = $result_list->fetch_assoc()) { 
-                            // เอาค่าทั้งหมดในdbมาวนโช
-
-                            ?>
-
-                        
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="card card-user nail">
-                                    <div class="image">
-                                        <img src="<?php echo $row['pic'] ?>" alt="...">
-                                    </div>
-                                    <div class="content">
-                                        <div class="row">
-                                            <div class="col-xs-12 detail">
-                                                <div class="numbers" style="font-size: 17px; text-align: left;">
-                                                    <?php echo $row['name']; ?>
-                                                </div>
-                                                <div class="numbers" style="font-size: 17px; text-align: left;">
-                                                    <?php echo $row['price']; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="footer">
-                                            <div class="numbers">
-                                            </div>
-                                            <hr>
-                                            <div class="stats"  style="text-align: right; text-align: right;position: absolute;right: 0px;">
-                                                <a href="nail-list-edit.php?id=<?php echo $row['id'] ?>" title="edit" > 
-                                                    <i class="ti-pencil" aria-hidden="true"></i>
-                                                </a>
-                                                <a 
-                                                href="nail-list-delete.php?id=<?php echo $row['id'] ?>&nail_group_id=<?php echo $row['nail_group_id'] ?>" 
-                                                title="edit" 
-                                                onclick="return confirm('Are you sure?')" >
-                                                    <i class="ti-close" aria-hidden="true"></i>
-                                                
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?php } ?>
-
-
-
                     <?php
-                    if (!empty($result_group)) {
-                        while ($row = $result_group->fetch_assoc()) { ?>
+                    if (!empty($result_nail)) {
+                        while ($row = $result_nail->fetch_assoc()) { ?>
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card card-user nail">
                                     <div class="image">
@@ -136,14 +116,11 @@ $result_list = $mysqli->query($sql_nail);
                                                     <?php echo $row['name']; ?>
                                                 </div>
                                             </div>
-                                       
-                                        <div>
+                                        </div>
                                         <div class="footer">
                                             <div class="numbers">
                                                 ฿ <?php echo $row['price']; ?>
-
                                             </div>
-                                        
                                             <hr>
                                             <div class="stats"
                                                  style="text-align: right; text-align: right;position: absolute;right: 0px;">
