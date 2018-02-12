@@ -147,11 +147,30 @@ while ($row = $result->fetch_assoc()) {
                                 $disabled = 'disabled';
                             }
 
+
+                            // ---------------- Employee ---------------------
+                            $time_start = $time['start'];
+                            $time_end   = $time['end'];
+
+                            $dateBooking = date('d-m-Y', strtotime($date_selected));
+                            $sub_sql     = "SELECT employee_id  FROM   `bookings` 
+                            LEFT JOIN employees ON employees.id = bookings.employee_id 
+                            WHERE  booking_status IN ( 'payment_waiting', 'payment_success',  'confirm' ) 
+                            AND Date_format(booking_date, '%d-%m-%Y') = '$dateBooking' 
+                            AND time_start = '$time_start' 
+                            AND time_end = '$time_end' ";
+
+                            $sql_emp = "SELECT *  FROM   `employees` WHERE  `id` NOT IN ($sub_sql) ORDER  BY `id` ASC ";
+                            $res_emp = $mysqli->query($sql_emp);
+                            if ($res_emp->num_rows <= 0) {
+                                $disabled = 'disabled';
+                            }
                             ?>
                             <label class="col-6 btn btn-default option choose-time-slot <?php echo $disabled ?>"
                                 <?php empty($disabled) ? "disabled" : true; ?>
                                    style="font-size: 20px;">
-                                <input type="radio" name="time-slot" id="" autocomplete="off" value="<?php echo $time['start']  ?>,<?php echo $time['end']  ?>"
+                                <input type="radio" name="time-slot" id="" autocomplete="off"
+                                       value="<?php echo $time['start'] ?>,<?php echo $time['end'] ?>"
                                 ><?php echo $time['name'] ?>
                             </label>
                         <?php } ?>
@@ -160,7 +179,8 @@ while ($row = $result->fetch_assoc()) {
             </div>
         </section>
     </main>
-    <button id="booking_btn" onclick="return confirm('Are you sure?')" type="submit" class="menu-footer header-fixed btn" data-toggle="modal"
+    <button id="booking_btn" onclick="return confirm('Are you sure?')" type="submit"
+            class="menu-footer header-fixed btn" data-toggle="modal"
             data-target="#exampleModal">
         <div class="container">
             <div id="logo" class="">

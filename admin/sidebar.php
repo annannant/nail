@@ -36,6 +36,12 @@ if (!isset($mysqli)) {
                 <p>History</p>
             </a>
         </li>
+        <li class="<?php echo ($page == 'table') ? 'active' : ''; ?>">
+            <a href="table.php">
+                <i class="fas fa-calendar-alt"></i>
+                <p>Table</p>
+            </a>
+        </li>
 
 
         <li class="active-pro">

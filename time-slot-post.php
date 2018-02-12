@@ -9,8 +9,19 @@ $time_slot    = explode(",", $_POST['time-slot']);
 $time_start   = $time_slot[0];
 $time_end     = $time_slot[1];
 
+$dateBooking = date('d-m-Y', strtotime($booking_date));
 // ---------------- Employee ---------------------
-$sql_emp     = "SELECT * FROM `employees` LIMIT 0,1";
+$sub_sql = "SELECT employee_id  FROM   `bookings` 
+LEFT JOIN employees ON employees.id = bookings.employee_id 
+WHERE  booking_status IN ( 'payment_waiting', 'payment_success',  'confirm' ) 
+AND Date_format(booking_date, '%d-%m-%Y') = '$dateBooking' 
+AND time_start = '$time_start' 
+AND time_end = '$time_end' ";
+
+$sql_emp     = "SELECT * 
+FROM   `employees` 
+WHERE  `id` NOT IN ($sub_sql) 
+ORDER  BY `id` ASC ";
 $res_emp     = $mysqli->query($sql_emp)->fetch_assoc();
 $employee_id = $res_emp['id'];
 

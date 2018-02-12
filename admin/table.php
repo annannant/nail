@@ -5,23 +5,10 @@ include "check_login_admin.php";
 
 $page = 'booking'; // for menu
 
-$date = '';
+$date = date('d-m-Y');
 if (!empty($_GET['date'])) {
     $date = $_GET['date'];
 }
-
-$sql_booking = "SELECT bookings.*, members.name as member_name,  employees.name as employee_name   
-FROM `bookings` 
-INNER JOIN members ON members.id = bookings.member_id
-INNER JOIN employees ON employees.id = bookings.employee_id
-WHERE booking_status IN ('confirm')";
-if (!empty($date)) {
-    $sql_booking .= "  AND DATE_FORMAT(booking_date, '%d-%m-%Y') = '$date'  ";
-}
-$sql_booking .= "  ORDER BY id DESC";
-//echo  $sql_booking;
-$result_booking = $mysqli->query($sql_booking);
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -63,7 +50,7 @@ $result_booking = $mysqli->query($sql_booking);
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Booking</a>
+                    <a class="navbar-brand" href="#">Table</a>
                 </div>
                 <div class="collapse navbar-collapse">
                 </div>
@@ -112,6 +99,24 @@ $result_booking = $mysqli->query($sql_booking);
                         "autoclose": true
                     });
                 </script>
+                <?php
+
+                // ---------------- Time -----------------
+                $sql_time = "SELECT * FROM `time_slots`  ORDER BY `time_slots`.`id`  ASC";
+                $res_time = $mysqli->query($sql_time);
+                $times    = [];
+                while ($row_time = $res_time->fetch_assoc()) {
+                    $times[] = $row_time;
+                }
+
+                // ---------------- Employee -----------------
+                $sql_emp   = "SELECT * FROM `employees` ORDER BY `employees`.`id`  ASC";
+                $res_emp   = $mysqli->query($sql_emp);
+                $employees = [];
+                while ($row_emp = $res_emp->fetch_assoc()) {
+                    $employees[] = $row_emp;
+                }
+                ?>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -122,66 +127,59 @@ $result_booking = $mysqli->query($sql_booking);
                                 <table class="table table-striped">
                                     <thead>
                                     <tr style="text-align: center;">
-                                        <th style="width: 10%;" class="text-center">Time</th>
-                                        <th style="width: 25%;" class="text-center">Name</th>
-                                        <th style="width: 25%;" class="text-center">Picture</th>
-                                        <th style="width: 30%;" class="text-center">Detail</th>
-                                        <th style="width: 10%;" class="text-center">Price</th>
+                                        <th style="width: 12%;" class="text-center">Time</th>
+                                        <?php foreach ($times as $time) { ?>
+                                            <th style="width: 5%;" class="text-center">
+                                                <div><?php echo date('H:i', strtotime($time['start'])); ?></div>
+                                                <div>-</div>
+                                                <div><?php echo date('H:i', strtotime($time['end'])); ?></div>
+                                            </th>
+                                        <?php } ?>
                                     </tr>
                                     </thead>
                                     <tbody>
-
-                                    <?php if (empty($result_booking->num_rows)) {  ?>
+                                    <?php foreach ($employees as $emp) { ?>
                                         <tr>
-                                            <td colspan="5" class="text-center">No data</td>
+                                            <th><?php echo $emp['name'] ?></th>
+                                            <?php foreach ($times as $time) { ?>
+                                                <?php
+                                                $emp_id      = $emp['id'];
+                                                $start       = $time['start'];
+                                                $end         = $time['end'];
+                                                $sql_booking = "   SELECT bookings.*, members.name as member_name, members.id as member_id,  employees.name as employee_name";
+                                                $sql_booking .= "  FROM `bookings` INNER JOIN members ON members.id = bookings.member_id ";
+                                                $sql_booking .= "  INNER JOIN employees ON employees.id = bookings.employee_id ";
+                                                $sql_booking .= "   WHERE booking_status IN ('confirm')";
+                                                $sql_booking .= "  AND DATE_FORMAT(booking_date, '%d-%m-%Y') = '$date'  ";
+                                                $sql_booking .= "  AND time_start = '$start'  ";
+                                                $sql_booking .= "  AND time_end = '$end'  ";
+                                                $sql_booking .= "  AND employee_id = '$emp_id'  ";
+                                                $sql_booking .= "  ORDER BY id DESC";
+//                                                echo $sql_booking;
+//                                                die;
+                                                $result_booking = $mysqli->query($sql_booking);
+                                                $booking = [];
+                                                if($result_booking->num_rows > 0){
+                                                    $booking = $result_booking->fetch_assoc();
+                                                }
+                                                ?>
+
+                                                <?php if (!empty($booking)) { ?>
+                                                    <td style="width: 10%;background-color: #AAAAAA" class="text-center" >
+                                                        <div><?php echo $booking['member_name'] ?></div>
+                                                        <div><?php echo $booking['id'] ?></div>
+                                                    </td>
+                                                <?php }else{ ?>
+
+                                                    <td style="width: 10%;" class="text-center">
+
+                                                    </td>
+                                                <?php } ?>
+
+                                            <?php } ?>
                                         </tr>
                                     <?php } ?>
 
-                                    <?php while ($row_booking = $result_booking->fetch_assoc()) {
-
-                                        $booking_id    = $row_booking['id'];
-                                        $booking_lists = "SELECT *  FROM `booking_lists` WHERE `booking_id` = $booking_id ORDER BY `booking_id`  ASC";
-                                        $result_list   = $mysqli->query($booking_lists);
-                                        $booking_list  = [];
-                                        while ($row_list = $result_list->fetch_assoc()) {
-                                            $booking_list[] = $row_list;
-                                        }
-
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <?php echo date('H:i', strtotime($row_booking['time_start'])) ?>
-                                                    - <?php echo date('H:i', strtotime($row_booking['time_end'])) ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h5 class="title"><?php echo $row_booking['member_name'] ?></h5>
-                                                <p class="category">พนักงาน
-                                                    : <?php echo $row_booking['employee_name'] ?></p>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <?php foreach ($booking_list as $key => $list) { ?>
-                                                        <img src="<?php echo $list['pic'] ?>"
-                                                             style="width: 50px;margin-bottom: 5px">
-                                                        <?php if (($key % 4) == 3) { ?>
-                                                            <div></div>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <ul>
-                                                    <?php foreach ($booking_list as $key => $list) { ?>
-                                                        <li><?php echo $list['nail_list_name'] ?>
-                                                            x<?php echo $list['qty'] ?> </li>
-                                                    <?php } ?>
-                                                </ul>
-                                            </td>
-                                            <td>฿<?php echo $row_booking['total_price'] ?></td>
-                                        </tr>
-                                    <?php } ?>
                                     </tbody>
                                 </table>
 
