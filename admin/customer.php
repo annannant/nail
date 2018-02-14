@@ -16,7 +16,7 @@ $result_customer = $mysqli->query($sql_customer);
 
 // ---------------- check expired ----------------
 $dateNow       = date('Y-m-d');
-$min           = 10;
+$min           = 15;
 $newDateNotify = new DateTime();
 $timeExpired   = $newDateNotify->modify("+$min minutes")->format('H:i:00');
 
